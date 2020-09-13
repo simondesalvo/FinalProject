@@ -1,35 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FinalProject.Models
-{    
-    public class Movie
+{
+    public partial class Movie
     {
-        public string id { get; set; }
-        public string title { get; set; }
-        public string year { get; set; }
-        public string length { get; set; }
-        public string rating { get; set; }
-        public string rating_votes { get; set; }
-        public string poster { get; set; }
-        public string plot { get; set; }
-        public Trailer trailer { get; set; }
-        public Cast[] cast { get; set; }
-        public string[][] technical_specs { get; set; }
-    }
+        public Movie()
+        {
+            Genre = new HashSet<Genre>();
+            MovieActor = new HashSet<MovieActor>();
+            UserMovie = new HashSet<UserMovie>();
+        }
 
-    public class Trailer
-    {
-        public string id { get; set; }
-        public string link { get; set; }
-    }
+        public string Imdbid { get; set; }
+        public string DirectorId { get; set; }
+        public byte? CriticScore { get; set; }
+        public string Plot { get; set; }
+        public string UserId { get; set; }
 
-    public class Cast
-    {
-        public string actor { get; set; }
-        public string actor_id { get; set; }
-        public string character { get; set; }
-    }    
+        public virtual AspNetUsers User { get; set; }
+        public virtual ICollection<Genre> Genre { get; set; }
+        public virtual ICollection<MovieActor> MovieActor { get; set; }
+        public virtual ICollection<UserMovie> UserMovie { get; set; }
+    }
 }
