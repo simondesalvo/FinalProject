@@ -1,17 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Movie Selection";
 }
-@model APIMovie
+@model PopcornMovie
 
-<p>@Model.title</p>
+<p>@Model.Title</p>
 <br />
-<img src="@Model.poster" width="500" height="600"/>
+<img src="@Model.Poster" width="500" height="600"/>
 <br />
-<p>@Model.plot</p>
+<p>@Model.Plot</p>
 <br />
-<p>IMDB rating: @Model.rating</p>
-@foreach (Cast c in Model.cast)
-{
-    <p>@c.actor played @c.character</p>
-    <br />
-}
+<p>Metacritic rating: @Model.Metascore</p>
+<p>@Model.Actors</p>

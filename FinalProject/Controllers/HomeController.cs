@@ -40,7 +40,7 @@ namespace FinalProject.Controllers
 
         public async Task<IActionResult> MovieSelection(string id)
         {
-            var selection = await _movieDAL.GetMovieInfo($"{id}");
+            var selection = await _movieDAL.SecondGetMovieInfo($"{id}");
             return View(selection);
 
         }
