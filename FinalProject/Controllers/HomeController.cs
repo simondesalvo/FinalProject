@@ -7,13 +7,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using FinalProject.Models;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace FinalProject.Controllers
 {
     public class HomeController : Controller
     {
         private readonly MovieDAL _movieDAL;
-        private readonly string _apikey;        
+        private readonly string _apikey;
+        private readonly MovieTrackerDbContext _movieDB;
 
         public HomeController(IConfiguration configuration)
         {
@@ -31,13 +34,14 @@ namespace FinalProject.Controllers
             return View();
         }
 
-
+        //basic search result list from first API
         public async Task<IActionResult> SearchResult(string userInput)
         {
             List<MovieSearch> movies = await _movieDAL.GetMovies($"{userInput}");
             return View("SearchResult", movies);
         }
 
+        //selection from search result, second API call
         public async Task<IActionResult> MovieSelection(string id)
         {
             var selection = await _movieDAL.SecondGetMovieInfo($"{id}");
@@ -46,6 +50,46 @@ namespace FinalProject.Controllers
         }
 
 
+        //display watched movie list
+        [Authorize]
+        public async Task<IActionResult> DisplayWatchedMovies()
+        {
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<UserMovie> savedMovies = _movieDB.UserMovie.Where(x => x.UserId == id).ToList();
+            List<PopcornMovie> watchedList = new List<PopcornMovie>();
+
+            foreach (UserMovie m in savedMovies)
+            {
+                var search = await _movieDAL.SecondGetMovieInfo(m.MovieId);
+                watchedList.Add(search);
+            }
+            return View(watchedList);
+        }
+
+        //delete movie from watch list
+        [Authorize]
+        public IActionResult DeleteMovie(string id)
+        {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            UserMovie movie = new UserMovie();
+            try
+            {
+                movie.UserId = userId;
+                movie = _movieDB.UserMovie.Where(x => x.MovieId == id).First();
+                _movieDB.UserMovie.Remove(movie);
+                _movieDB.SaveChanges();
+                return RedirectToAction("DisplayWatchedMovies");
+            }
+            catch
+            {
+                return RedirectToAction("DisplayWatchedMovies");
+            }
+        }
+
+
+
+
+        //search for second API, not used yet
         public async Task<PopcornMovie> SecondApiSearch()
         {
             PopcornMovie movie = await _movieDAL.SecondGetMovieInfo("tt1375666");
