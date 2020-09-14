@@ -2,7 +2,7 @@
     ViewData["Title"] = "Movie Selection";
 }
 @model PopcornMovie
-    <form method="post" action="../Home/AddtoWatchedList">
+    @*<form method="post" action="../Home/AddtoWatchedList">*@
         <p>@Model.Title</p>
         <br />
         <img src="@Model.Poster" width="500" height="600" />
@@ -12,10 +12,10 @@
         <p>Metacritic rating: @Model.Metascore</p>
         <p>@Model.Actors</p>
 
+        <a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a>
+            @*<input type="submit" value="Add to List" class="btn btn-success" />*@
 
-        <input type="submit" value="Add to List" class="btn btn-success" />
-
-    </form>
+    @*</form>*@
 
 
 
