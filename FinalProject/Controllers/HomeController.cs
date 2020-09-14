@@ -52,18 +52,11 @@ namespace FinalProject.Controllers
 
         //display watched movie list
         [Authorize]
-        public async Task<IActionResult> DisplayWatchedMovies()
+        public async Task<IActionResult> DisplayList()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<UserMovie> savedMovies = _movieDB.UserMovie.Where(x => x.UserId == id).ToList();
-            List<PopcornMovie> watchedList = new List<PopcornMovie>();
-
-            foreach (UserMovie m in savedMovies)
-            {
-                var search = await _movieDAL.SecondGetMovieInfo(m.MovieId);
-                watchedList.Add(search);
-            }
-            return View(watchedList);
+            return View(savedMovies);
         }
 
         //delete movie from watch list
