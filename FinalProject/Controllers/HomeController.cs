@@ -52,7 +52,7 @@ namespace FinalProject.Controllers
 
         //display watched movie list
         [Authorize]
-        public async Task<IActionResult> DisplayList()
+        public IActionResult DisplayList()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<UserMovie> savedMovies = _movieDB.UserMovie.Where(x => x.UserId == id).ToList();
@@ -71,11 +71,11 @@ namespace FinalProject.Controllers
                 movie = _movieDB.UserMovie.Where(x => x.MovieId == id).First();
                 _movieDB.UserMovie.Remove(movie);
                 _movieDB.SaveChanges();
-                return RedirectToAction("DisplayWatchedMovies");
+                return RedirectToAction("DisplayList");
             }
             catch
             {
-                return RedirectToAction("DisplayWatchedMovies");
+                return RedirectToAction("DisplayList");
             }
         }
 
