@@ -16,15 +16,15 @@ namespace FinalProject.Controllers
     {
         private readonly MovieDAL _movieDAL;
         private readonly string _apikey;
-        string loginUserId;
         private readonly MovieTrackerDbContext _context;
         private readonly MovieTrackerDbContext _movieDB;
 
-        public HomeController(IConfiguration configuration)
+        public HomeController(IConfiguration configuration, MovieTrackerDbContext context)
         {
             _apikey = configuration.GetSection("ApiKeys")["MovieAPIKey"];
             _movieDAL = new MovieDAL(_apikey);
-            //loginUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            _context = context;
+
         }
 
         public IActionResult Index()
@@ -82,9 +82,6 @@ namespace FinalProject.Controllers
             }
         }
 
-
-
-
         //search for second API, not used yet
         public async Task<PopcornMovie> SecondApiSearch()
         {
@@ -92,23 +89,29 @@ namespace FinalProject.Controllers
             return movie;
         }
 
-        public IActionResult AddtoWatchedList(PopcornMovie popcornMovie)
+        public async Task<IActionResult> AddtoWatchedList(string id)
         {
+            PopcornMovie selectedMovie = await _movieDAL.SecondGetMovieInfo($"{id}");
+            string loginUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             UserMovie userMovie = new UserMovie();
             userMovie.UserId = loginUserId;
-            userMovie.MovieId = popcornMovie.imdbID;
-            userMovie.Title = popcornMovie.Title;
+            userMovie.MovieId = selectedMovie.imdbID;
+            userMovie.Title = selectedMovie.Title;
             userMovie.Watched = false;
-            try
+            //try
+            //{
+                if(ModelState.IsValid)
             {
                 _context.UserMovie.Add(userMovie);
                 _context.SaveChanges();
-                AddtoGenre(popcornMovie);
+                AddtoGenre(selectedMovie);
             }
-            catch
-            {
+                
+            //}
+            //catch
+            //{
 
-            }
+            //}
             return RedirectToAction("DisplayList");
         }
 
