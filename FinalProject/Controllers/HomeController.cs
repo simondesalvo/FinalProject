@@ -24,7 +24,7 @@ namespace FinalProject.Controllers
         {
             _apikey = configuration.GetSection("ApiKeys")["MovieAPIKey"];
             _movieDAL = new MovieDAL(_apikey);
-            loginUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //loginUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
 
         public IActionResult Index()
