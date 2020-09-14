@@ -31,7 +31,7 @@ namespace FinalProject.Models
             return client;
         }
 
-        public HttpClient GetDetailClient()
+        public HttpClient GetSecondClient()
         {
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri("https://movie-database-imdb-alternative.p.rapidapi.com");
@@ -39,38 +39,42 @@ namespace FinalProject.Models
             return client;
         }
 
-        public async Task<List<MovieSearch>> GetMovie(string title)
+        public async Task<List<MovieSearch>> GetMovies(string title)
         {
-            //calls the method that gives the API the general information needed to 
-            //receive data from the API 
             var client = GetClient();
-
-            //uses the client (HTTPClient) to receive 
             //data from the API based off of a certain endpoint.
-            var response = await client.GetAsync($"/search/{title}"); 
-            
-            string jasonData = await response.Content.ReadAsStringAsync();
-            //install-package Microsoft.AspNet.WebAPI.Client
+            var response = await client.GetAsync($"/search/{title}");
 
+            string jasonData = await response.Content.ReadAsStringAsync();
             JObject json = JObject.Parse(jasonData);
             List<JToken> data = json["titles"].ToList();
-           
+
             MovieSearch movie = new MovieSearch();
             List<MovieSearch> moviesList = new List<MovieSearch>();
             for (int i = 0; i < data.Count; i++)
             {
                 movie = JsonConvert.DeserializeObject<MovieSearch>(data[i].ToString());
                 moviesList.Add(movie);
-            }                     
-            
-            return moviesList;            
+            }
+
+            return moviesList;
         }
 
-        public async Task<PopcornMovie> GetMovieInfo(string movieId)
+        public async Task<APIMovie> GetMovieInfo(string imdb)
+        {
+            var client = GetClient();
+            var response = await client.GetAsync($"/film/{imdb}");
+            string jasonData = await response.Content.ReadAsStringAsync();
+            APIMovie movie = JsonConvert.DeserializeObject<APIMovie>(jasonData);
+            return movie;
+        }
+
+
+        public async Task<PopcornMovie> SecondGetMovieInfo(string movieId)
         {
             //calls the method that gives the API the general information needed to 
             //receive data from the API 
-            var client = GetDetailClient();
+            var client = GetSecondClient();
 
             //uses the client (HTTPClient) to receive 
             //data from the API based off of a certain endpoint.

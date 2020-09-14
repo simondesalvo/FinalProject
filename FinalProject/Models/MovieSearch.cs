@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 namespace FinalProject.Models
 {
 
-    //public class RootObject
-    //{
-    //    public Title[] titles { get; set; }
-    //    public object[] names { get; set; }
-    //    public object[] companies { get; set; }
-    //}
+    public class RootObject
+    {
+        //public Title[] titles { get; set; }
+        public object[] names { get; set; }
+        public object[] companies { get; set; }
+    }
 
     public class MovieSearch
     {

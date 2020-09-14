@@ -26,14 +26,29 @@ namespace FinalProject.Controllers
             return View();
         }
 
-        public async Task<List<MovieSearch>> SearchMovie()
-        {            
-            List<MovieSearch> movies = await _movieDAL.GetMovie("inception");
-            return movies;
-        }
-        public async Task<PopcornMovie> SearchMovieDetails()
+        public IActionResult Search()
         {
-            PopcornMovie movie = await _movieDAL.GetMovieInfo("tt1375666");
+            return View();
+        }
+
+
+        public async Task<IActionResult> SearchResult(string userInput)
+        {
+            List<MovieSearch> movies = await _movieDAL.GetMovies($"{userInput}");
+            return View("SearchResult", movies);
+        }
+
+        public async Task<IActionResult> MovieSelection(string id)
+        {
+            var selection = await _movieDAL.GetMovieInfo($"{id}");
+            return View(selection);
+
+        }
+
+
+        public async Task<PopcornMovie> SecondApiSearch()
+        {
+            PopcornMovie movie = await _movieDAL.SecondGetMovieInfo("tt1375666");
             return movie;
         }
 

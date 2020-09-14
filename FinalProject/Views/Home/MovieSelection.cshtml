@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Movie Selection";
+}
+@model APIMovie
+
+<p>@Model.title</p>
+<br />
+<img src="@Model.poster" width="500" height="600"/>
+<br />
+<p>@Model.plot</p>
+<br />
+<p>IMDB rating: @Model.rating</p>
+@foreach (Cast c in Model.cast)
+{
+    <p>@c.actor played @c.character</p>
+    <br />
+}

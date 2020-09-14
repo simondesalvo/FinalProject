@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Movie Search Result";
+}
+@model List<MovieSearch>
+
+
+    <table class="table table-bordered">
+
+        <tr class="d-table-row">
+            <th>Title</th>
+            <th>Poster</th>
+        </tr>
+
+       @foreach (MovieSearch m in Model)
+       {
+    <tr>
+        <td>@m.title</td>
+        <td><img src="@m.image" width="500" height="600"/></td>
+        <td><a href="../Home/MovieSelection?id=@m.id"class="btn btn-primary btn-sm btn btn-outline-success">See Details</a></td>
+    </tr>
+       }
+
+    </table>
