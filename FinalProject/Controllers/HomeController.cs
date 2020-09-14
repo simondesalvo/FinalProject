@@ -71,11 +71,11 @@ namespace FinalProject.Controllers
                 movie = _movieDB.UserMovie.Where(x => x.MovieId == id).First();
                 _movieDB.UserMovie.Remove(movie);
                 _movieDB.SaveChanges();
-                return RedirectToAction("DisplayWatchedMovies");
+                return RedirectToAction("DisplayList");
             }
             catch
             {
-                return RedirectToAction("DisplayWatchedMovies");
+                return RedirectToAction("DisplayList");
             }
         }
 

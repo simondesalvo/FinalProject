@@ -14,6 +14,7 @@ namespace FinalProject.Models
         public byte? UserRating { get; set; }
         public string UserReview { get; set; }
         public int? WatchedTogetherId { get; set; }
+        public string Title { get; set; }
 
         public virtual Movie Movie { get; set; }
         public virtual AspNetUsers User { get; set; }
