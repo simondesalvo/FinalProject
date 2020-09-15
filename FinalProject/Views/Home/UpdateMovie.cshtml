@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Update Movie";
+}
+@model UserMovie
+
+    <form action="../Home/UpdateWatchedList" method="post">
+        <input type="text" name="Id" value="@Model.Id" hidden />
+        <p>Have you watched this movie?</p>
+        @if (Model.Watched == true)
+        {
+            <input type="checkbox" id ="Watched" name="Watched" value="true" checked />
+            <input type="checkbox" id ="Watched" name="Watched" value="false" hidden />
+        }
+        else
+        {
+            <input type="checkbox" id ="Watched" name="Watched" value="true" />
+            <input type="checkbox" id ="Watched" name="Watched" value="false" hidden />
+        }
+        <br />
+        <input type="text" id ="WatchLocation" name="WatchLocation" value="@Model.WatchLocation" placeholder="Where did you watch it?" />
+        <br />
+        <input type="date" id="WatchYear" name="WatchYear" value="@Model.WatchYear" placeholder="Date Watched"/>
+        <br />
+        <p>Rating (1-100)</p>
+        <input type="number" id="WatchYear" name="UserRating" min="1" max="100" />
+        <br />
+        <input type="text" id="UserReview" name="UserReview" maxlength="300" placeholder="Leave a short review, or keywords you want to tag the movie with. 300 character limit" />
+        <input type="submit" value="Save Changes" />
+
+    </form>

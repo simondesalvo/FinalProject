@@ -17,13 +17,14 @@ namespace FinalProject.Controllers
         private readonly MovieDAL _movieDAL;
         private readonly string _apikey;
         private readonly MovieTrackerDbContext _context;
-        private readonly MovieTrackerDbContext _movieDB;
+        
 
         public HomeController(IConfiguration configuration, MovieTrackerDbContext context)
         {
             _apikey = configuration.GetSection("ApiKeys")["MovieAPIKey"];
             _movieDAL = new MovieDAL(_apikey);
             _context = context;
+
         }
 
         public IActionResult Index()
@@ -52,27 +53,27 @@ namespace FinalProject.Controllers
         }
 
 
-        //display watched movie list
+        //display movie list
         [Authorize]
         public IActionResult DisplayList()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            List<UserMovie> savedMovies = _movieDB.UserMovie.Where(x => x.UserId == id).ToList();
+            List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
             return View(savedMovies);
         }
 
         //delete movie from watch list
         [Authorize]
-        public IActionResult DeleteMovie(string id)
+        public IActionResult DeleteMovie(int id)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             UserMovie movie = new UserMovie();
             try
             {
                 movie.UserId = userId;
-                movie = _movieDB.UserMovie.Where(x => x.MovieId == id).First();
-                _movieDB.UserMovie.Remove(movie);
-                _movieDB.SaveChanges();
+                movie = _context.UserMovie.Where(x => x.Id == id).First();
+                _context.UserMovie.Remove(movie);
+                _context.SaveChanges();
                 return RedirectToAction("DisplayList");
             }
             catch
@@ -88,6 +89,8 @@ namespace FinalProject.Controllers
             return movie;
         }
 
+
+        //add movie to list
         public async Task<IActionResult> AddtoWatchedList(string id)
         {
             // Get movie info from the API using the IMDB id
@@ -118,6 +121,8 @@ namespace FinalProject.Controllers
             return RedirectToAction("DisplayList");
         }
 
+
+        //adds genre to genre table (for recommendations)
         public bool AddtoGenre(PopcornMovie popcornMovie)
         {
             // Create a new object to store a list of unique genres
@@ -165,6 +170,21 @@ namespace FinalProject.Controllers
             }
         }
 
+
+        //checks to see if user's movie is still in database before going to update view
+        public IActionResult UpdateMovie (int id)
+        {
+            UserMovie movie = _context.UserMovie.Find(id);
+            if (movie == null)
+            {
+                return RedirectToAction("DisplayList");
+            }
+            else
+            {
+                return View(movie);
+            }
+        }
+        //update movie in list
         public IActionResult UpdateWatchedList(UserMovie userMovie)
         {
             UserMovie userMovieToUpdate = _context.UserMovie.Find(userMovie.Id);
@@ -174,12 +194,15 @@ namespace FinalProject.Controllers
             userMovieToUpdate.UserRating = userMovie.UserRating;
             userMovieToUpdate.UserReview = userMovie.UserReview;
             // TO BE IMPLEMENTED LATER
-            //userMovieToUpdate.WatchedTogetherId = ;     
+            //userMovieToUpdate.WatchedTogetherId = ;
+            _context.Entry(userMovieToUpdate).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
             _context.UserMovie.Update(userMovieToUpdate);
             _context.SaveChanges();
 
             return RedirectToAction("DisplayList");
         }
+
+
         public IActionResult Privacy()
         {
             return View();
