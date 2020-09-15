@@ -15,11 +15,18 @@ namespace FinalProject.Controllers
         private readonly MovieTrackerDbContext _context;
         private readonly string _apikey;
 
-        public RecommendationController(IConfiguration configuration)
+        //public RecommendationController(IConfiguration configuration)
+        //{
+        //    _apikey = configuration.GetSection("ApiKeys")["MovieAPIKey"];
+        //    _movieDAL = new MovieDAL(_apikey);
+        //    _context = new MovieTrackerDbContext();
+        //}
+        public RecommendationController(IConfiguration configuration, MovieTrackerDbContext context)
         {
             _apikey = configuration.GetSection("ApiKeys")["MovieAPIKey"];
             _movieDAL = new MovieDAL(_apikey);
-            _context = new MovieTrackerDbContext();
+            _context = context;
+
         }
         public IActionResult Index()
         {
@@ -40,16 +47,17 @@ namespace FinalProject.Controllers
             List<Genre> allGenres = _context.Genre.Distinct().ToList();
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
-            //var uniqueGenres = _context.Genre.Select(g => g.Genre1).Distinct();
             List<int> genreCounts = new List<int>();
-            for (int i = 0; i < allGenres.Count(); i++)  //iterates through every genre available / i= the genre we are checking
+            for (int i = 0; i < allGenres.Count; i++)  //iterates through every genre available / i= the genre we are checking
             {
                 int counter = 0;
                 string checkedGenre = allGenres[i].Genre1;
-                for (int u = 0; u < watchedMovies.Count(); u++) //iterates through every movie wathced by the user
+                for (int u = 0; u < watchedMovies.Count; u++) //iterates through every movie wathced by the user
                 {
+                    
                     List <Genre> userGenres = allGenres.Where(m => m.Imdbid == watchedMovies[u].MovieId).ToList(); //variable that finds the genre of the wathced movie at u
-                    if (userGenres[u].Genre1 == allGenres[i].Genre1)   //increases count if the watched movie's genre is the same as the genre we are checking (i)
+                    for (int wg=0; wg<userGenres.Count; wg++) //goes through every genre associated with a single wathced movie
+                    if (userGenres[wg].Genre1.Contains(allGenres[i].Genre1))   //increases count if the watched movie's genre is the same as the genre we are checking (i)
                     {
                         counter++;
                     }
@@ -61,66 +69,6 @@ namespace FinalProject.Controllers
             return allGenres[genreIndex];
         }
 
-        //public int GenreRecommender()
-        //{
-
-        //    //Genre genre1 = _context.Genre.Select(x =>x.Genre1 ==watchedMovies[0].MovieId)
-        //    string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-        //    List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
-        //    List<UserMovie> allUserMovies = _context.UserMovie.ToList();
-        //    int genreCount1 = 0;
-
-        //    for (int i = 0; i < watchedMovies.Count; i++)
-        //    {
-        //        Genre genre1st = (Genre)_context.Genre.Where(x => x.Imdbid == watchedMovies[0].MovieId);
-        //        string genreChecker = _context.Genre.Where(x => x.Imdbid == watchedMovies[i].MovieId).ToString();
-        //        genre1st.Genre1
-
-
-        //        if (genre1 == genreChecker)
-        //        {
-        //            genreCount1++;
-        //        }
-
-
-                //foreach (UserMovie m in watchedMovies)
-                //{
-                //    if (genre1 == m.ToString())
-                //    {
-                //        genreCount1++;
-                //    }
-                //}
-        //    }
-        //    return genreCount1;
-        //}
-        //public int ActionGenreCount()
-        //{
-        //    string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-        //    List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
-        //    List<UserMovie> allUserMovies = _context.UserMovie.ToList();
-
-        //    int genreCount1 = 0;
-        //    for (int i = 0; i < watchedMovies.Count; i++)
-        //    {
-        //        // string genre1 = _context.Genre.Where(x => x.Imdbid == watchedMovies[0].MovieId).ToString();
-        //        string action = "action";
-        //        string genreChecker = _context.Genre.Where(x => x.Imdbid == watchedMovies[i].MovieId).ToString().ToLower();
-        //        if (genreChecker.Contains(action))
-        //        {
-        //            genreCount1++;
-        //        }
-        //    }
-        //    return genreCount1;
-        //}
-        //public int ActionGenreCount()
-        //{
-        //    string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-        //    List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
-        //    List<Genre> genres = _context.Genre.Distinct(x => x.);
-
-        //}
+       
     }
 }
