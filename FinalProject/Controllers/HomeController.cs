@@ -123,6 +123,7 @@ namespace FinalProject.Controllers
                     _context.UserMovie.Add(userMovie);
                     _context.SaveChanges();
                     AddtoGenre(selectedMovie);
+                    //AddToMovieActor(id, selectedMovie.Actors);
                 }
                 else
                 {
