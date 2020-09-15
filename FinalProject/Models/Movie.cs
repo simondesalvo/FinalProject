@@ -7,9 +7,7 @@ namespace FinalProject.Models
     {
         public Movie()
         {
-            Genre = new HashSet<Genre>();
             MovieActor = new HashSet<MovieActor>();
-            UserMovie = new HashSet<UserMovie>();
         }
 
         public string Imdbid { get; set; }
@@ -19,8 +17,6 @@ namespace FinalProject.Models
         public string UserId { get; set; }
 
         public virtual AspNetUsers User { get; set; }
-        public virtual ICollection<Genre> Genre { get; set; }
         public virtual ICollection<MovieActor> MovieActor { get; set; }
-        public virtual ICollection<UserMovie> UserMovie { get; set; }
     }
 }

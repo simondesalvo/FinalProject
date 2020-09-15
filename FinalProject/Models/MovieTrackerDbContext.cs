@@ -36,6 +36,12 @@ namespace FinalProject.Models
             {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+
+
+
+
+
+
             }
         }
 
@@ -157,12 +163,6 @@ namespace FinalProject.Models
                     .IsRequired()
                     .HasColumnName("IMDBId")
                     .HasMaxLength(50);
-
-                entity.HasOne(d => d.Imdb)
-                    .WithMany(p => p.Genre)
-                    .HasForeignKey(d => d.Imdbid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Genre__IMDBId__160F4887");
             });
 
             modelBuilder.Entity<Movie>(entity =>
@@ -188,7 +188,7 @@ namespace FinalProject.Models
 
             modelBuilder.Entity<MovieActor>(entity =>
             {
-                entity.Property(e => e.ActorId)
+                entity.Property(e => e.Actor)
                     .IsRequired()
                     .HasMaxLength(50);
 
@@ -196,12 +196,6 @@ namespace FinalProject.Models
                     .IsRequired()
                     .HasColumnName("IMDBId")
                     .HasMaxLength(50);
-
-                entity.HasOne(d => d.Actor)
-                    .WithMany(p => p.MovieActor)
-                    .HasForeignKey(d => d.ActorId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MovieActo__Actor__114A936A");
 
                 entity.HasOne(d => d.Imdb)
                     .WithMany(p => p.MovieActor)
@@ -216,6 +210,8 @@ namespace FinalProject.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
+                entity.Property(e => e.Title).HasMaxLength(50);
+
                 entity.Property(e => e.UserId)
                     .IsRequired()
                     .HasMaxLength(450);
@@ -225,12 +221,6 @@ namespace FinalProject.Models
                 entity.Property(e => e.WatchLocation).HasMaxLength(50);
 
                 entity.Property(e => e.WatchYear).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Movie)
-                    .WithMany(p => p.UserMovie)
-                    .HasForeignKey(d => d.MovieId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserMovie__Movie__0C85DE4D");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserMovie)
