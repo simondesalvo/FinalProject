@@ -73,10 +73,18 @@ namespace FinalProject.Controllers
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             UserMovie movie = new UserMovie();
+            Genre genre = new Genre();
             try
             {
                 movie.UserId = userId;
                 movie = _context.UserMovie.Where(x => x.Id == id).First();
+                //movie.MovieId = genre.Imdbid;
+                List<Genre> genreList = _context.Genre.Where(x => x.Imdbid == movie.MovieId).ToList();
+                foreach (Genre g in genreList)
+                {
+                    _context.Genre.Remove(g);
+                    _context.SaveChanges();
+                }
                 _context.UserMovie.Remove(movie);
                 _context.SaveChanges();
                 return RedirectToAction("DisplayList");
@@ -87,12 +95,8 @@ namespace FinalProject.Controllers
             }
         }
 
-        //search for second API, not used yet
-        public async Task<PopcornMovie> SecondApiSearch()
-        {
-            PopcornMovie movie = await _movieDAL.SecondGetMovieInfo("tt1375666");
-            return movie;
-        }
+        
+       
 
 
         //add movie to list

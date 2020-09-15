@@ -8,7 +8,5 @@ namespace FinalProject.Models
         public int Id { get; set; }
         public string Imdbid { get; set; }
         public string Genre1 { get; set; }
-
-        public virtual Movie Imdb { get; set; }
     }
 }
