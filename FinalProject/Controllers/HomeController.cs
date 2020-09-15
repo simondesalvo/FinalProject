@@ -51,16 +51,21 @@ namespace FinalProject.Controllers
             return View(selection);
 
         }
-
-
+        
         //display movie list
         [Authorize]
         public IActionResult DisplayList()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
-            return View(savedMovies);
+            List<UserMovie> userList = new List<UserMovie>();
+            foreach (UserMovie m in savedMovies)
+            {
+                userList.Add(m);
+            }
+            return View(userList);
         }
+
 
         //delete movie from watch list
         [Authorize]
@@ -103,31 +108,30 @@ namespace FinalProject.Controllers
             userMovie.MovieId = selectedMovie.imdbID;
             userMovie.Title = selectedMovie.Title;
             userMovie.Watched = false;
-            //try
-            //{
+            
             //Add the new object to the table 
-                if(ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-                _context.UserMovie.Add(userMovie);
-                _context.SaveChanges();
-                AddtoGenre(selectedMovie);
+                UserMovie userMovieExisting = _context.UserMovie.Where(um=>um.MovieId == id).FirstOrDefault();
+                if (userMovieExisting == null)
+                {
+                    ViewBag.MovieExitsInWatchedList = false;
+                    _context.UserMovie.Add(userMovie);
+                    _context.SaveChanges();
+                    AddtoGenre(selectedMovie);
+                }
+                else
+                {
+                    ViewBag.MovieExitsInWatchedList = true;
+                }                
             }
-                
-            //}
-            //catch
-            //{
-
-            //}
             return RedirectToAction("DisplayList");
         }
 
 
         //adds genre to genre table (for recommendations)
         public bool AddtoGenre(PopcornMovie popcornMovie)
-        {
-            // Create a new object to store a list of unique genres
-            UniqueGenre uGenre = new UniqueGenre();
-
+        {     
             try
             {
                 //split genre value to get individual genres
@@ -144,22 +148,7 @@ namespace FinalProject.Controllers
                     {
                         //Add the new genre to the table 
                         _context.Genre.Add(newEntry);
-                        _context.SaveChanges();
-
-                        // If the genre is not already present in the unique list, add it.
-
-                        var listOfGenres = _context.Genre.GroupBy(x => x.Genre1).Select(x => x.FirstOrDefault());
-                        var details = _context.Genre.GroupBy(x => x.Genre1).Select(y => y.First()).Distinct();
-
-                        if (uGenre.uniqueGenres == null)
-                        {
-                            uGenre.uniqueGenres = new List<string>();
-                            uGenre.uniqueGenres.Add(genreArray[i]);
-                        }
-                        else if (!uGenre.uniqueGenres.Contains(genreArray[i]))
-                        {
-                            uGenre.uniqueGenres.Add(genreArray[i]);
-                        }
+                        _context.SaveChanges();                        
                     }
                 }
                 return true;
@@ -169,7 +158,6 @@ namespace FinalProject.Controllers
                 return false;
             }
         }
-
 
         //checks to see if user's movie is still in database before going to update view
         public IActionResult UpdateMovie (int id)
@@ -202,7 +190,14 @@ namespace FinalProject.Controllers
             return RedirectToAction("DisplayList");
         }
 
+        // Returns a list of unique Genres stored in the db
+        public List<string> GetDistinctGenres()
+        {
+            List<string> distinctGenres = new List<string>();            
+            distinctGenres = _context.Genre.ToList().Select(p => p.Genre1).Distinct().ToList();
 
+            return distinctGenres;
+        }
         public IActionResult Privacy()
         {
             return View();
