@@ -25,7 +25,6 @@
     <Folder Include="Views\UserCritic\" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="FinalProject.csproj" />
     <None Remove="FinalProject.csproj.user" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +52,7 @@
     <None Include="obj\FinalProject.csproj.nuget.g.targets" />
     <None Include="obj\project.assets.json" />
     <None Include="obj\project.nuget.cache" />
+    <None Include="FinalProject.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs" />
