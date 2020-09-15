@@ -90,8 +90,11 @@ namespace FinalProject.Controllers
 
         public async Task<IActionResult> AddtoWatchedList(string id)
         {
+            // Get movie info from the API using the IMDB id
             PopcornMovie selectedMovie = await _movieDAL.SecondGetMovieInfo($"{id}");
+            // Get the login user id
             string loginUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // Create a new UserMovie object and fill in the details
             UserMovie userMovie = new UserMovie();
             userMovie.UserId = loginUserId;
             userMovie.MovieId = selectedMovie.imdbID;
@@ -99,6 +102,7 @@ namespace FinalProject.Controllers
             userMovie.Watched = false;
             //try
             //{
+            //Add the new object to the table 
                 if(ModelState.IsValid)
             {
                 _context.UserMovie.Add(userMovie);
@@ -115,18 +119,43 @@ namespace FinalProject.Controllers
         }
 
         public bool AddtoGenre(PopcornMovie popcornMovie)
-        {            
-            Genre newEntry = new Genre();
-            newEntry.Imdbid = popcornMovie.imdbID;
-            newEntry.Genre1 = popcornMovie.Genre;
+        {
+            // Create a new object to store a list of unique genres
             UniqueGenre uGenre = new UniqueGenre();
+
             try
             {
-                _context.Genre.Add(newEntry);
-                _context.SaveChanges();
-                if(!uGenre.uniqueGenres.Contains(popcornMovie.Genre))
+                //split genre value to get individual genres
+                string genreString = popcornMovie.Genre.Replace(",", null);
+                string[] genreArray = genreString.Split(" ");
+                for (int i=0; i<genreArray.Length;i++)
                 {
-                    uGenre.uniqueGenres.Add(popcornMovie.Genre);
+                    // Create a new genre object and fill in the details
+                    Genre newEntry = new Genre();
+                    newEntry.Imdbid = popcornMovie.imdbID;
+                    newEntry.Genre1 = genreArray[i];
+
+                    if(ModelState.IsValid)
+                    {
+                        //Add the new genre to the table 
+                        _context.Genre.Add(newEntry);
+                        _context.SaveChanges();
+
+                        // If the genre is not already present in the unique list, add it.
+
+                        var listOfGenres = _context.Genre.GroupBy(x => x.Genre1).Select(x => x.FirstOrDefault());
+                        var details = _context.Genre.GroupBy(x => x.Genre1).Select(y => y.First()).Distinct();
+
+                        if (uGenre.uniqueGenres == null)
+                        {
+                            uGenre.uniqueGenres = new List<string>();
+                            uGenre.uniqueGenres.Add(genreArray[i]);
+                        }
+                        else if (!uGenre.uniqueGenres.Contains(genreArray[i]))
+                        {
+                            uGenre.uniqueGenres.Add(genreArray[i]);
+                        }
+                    }
                 }
                 return true;
             }
