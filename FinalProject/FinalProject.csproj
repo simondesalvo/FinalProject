@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Recommendation\Recommended.cshtml" />
     <Content Remove="Views\Home\UpdateMovie.cshtml" />
   </ItemGroup>
   <ItemGroup>
