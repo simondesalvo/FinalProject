@@ -64,14 +64,14 @@ namespace FinalProject.Controllers
 
         //delete movie from watch list
         [Authorize]
-        public IActionResult DeleteMovie(string id)
+        public IActionResult DeleteMovie(int id)
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             UserMovie movie = new UserMovie();
             try
             {
                 movie.UserId = userId;
-                movie = _context.UserMovie.Where(x => x.MovieId == id).First();
+                movie = _context.UserMovie.Where(x => x.Id == id).First();
                 _context.UserMovie.Remove(movie);
                 _context.SaveChanges();
                 return RedirectToAction("DisplayList");
