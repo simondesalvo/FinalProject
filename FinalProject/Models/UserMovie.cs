@@ -16,7 +16,6 @@ namespace FinalProject.Models
         public int? WatchedTogetherId { get; set; }
         public string Title { get; set; }
 
-        public virtual Movie Movie { get; set; }
         public virtual AspNetUsers User { get; set; }
     }
 }
