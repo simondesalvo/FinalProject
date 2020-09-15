@@ -4,7 +4,17 @@
 @model List<UserMovie>
 
     <table class="table table-bordered">
-       
+       @foreach (UserMovie m in Model)
+       {
+        <tr>
+            <td>@m.Title</td>
+            <td>@m.Watched</td>
+            <td>@m.WatchLocation</td>
+            <td>@m.UserRating</td>
+            <td>@m.UserReview</td>
+            <td><a href="../Home/UpdateMovie?id=@m.Id">Update Movie</a></td>
+        </tr>
+       }
 
 
     </table>
