@@ -8,5 +8,7 @@ namespace FinalProject.Models
     public class UniqueGenre
     {
         public List<string> uniqueGenres { get; set; }
+
+        public UniqueGenre() { }
     }
 }
