@@ -35,29 +35,42 @@ namespace FinalProject.Controllers
 
         public IActionResult Recommended()
         {
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
+           
+            string mostViewedGenre= GetMostWatchedGenre();
+            List<UserMovie> movieByGenre = new List<UserMovie>();
 
-            Genre mostViewedGenre= GetMostWatchedGenre();
-            List<UserMovie> recommendedList = _context.UserMovie.Where(r => r.MovieId == mostViewedGenre.Imdbid).ToList();
-
-            return View(recommendedList);
+            List<Genre> allGenres = _context.Genre.Where(g => g.Genre1==mostViewedGenre).ToList();
+            for (int g = 0; g < allGenres.Count; g++)
+            {
+                Genre watchedGenre = allGenres[g];
+                List<UserMovie> findMovie = _context.UserMovie.Where(r => r.MovieId == watchedGenre.Imdbid).ToList();
+                movieByGenre.Add(findMovie[0]);
+            }
+            List<UserMovie> recommendedMovies = movieByGenre.Except(watchedMovies).ToList();
+            recommendedMovies.Select(x => x.MovieId).Distinct();
+            return View(recommendedMovies);
         }
 
-        public Genre GetMostWatchedGenre()
+        public string GetMostWatchedGenre()
         {
-            List<Genre> allGenres = _context.Genre.Distinct().ToList();
+            List<string> distinctGenres = GetDistinctGenres();
+           List<Genre> allGenres = _context.Genre.ToList();
+            
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
             List<int> genreCounts = new List<int>();
-            for (int i = 0; i < allGenres.Count; i++)  //iterates through every genre available / i= the genre we are checking
+            for (int i = 0; i < distinctGenres.Count; i++)  //iterates through every genre available / i= the genre we are checking
             {
                 int counter = 0;
-                string checkedGenre = allGenres[i].Genre1;
+                string checkedGenre = distinctGenres[i];
                 for (int u = 0; u < watchedMovies.Count; u++) //iterates through every movie wathced by the user
                 {
                     
                     List <Genre> userGenres = allGenres.Where(m => m.Imdbid == watchedMovies[u].MovieId).ToList(); //variable that finds the genre of the wathced movie at u
                     for (int wg=0; wg<userGenres.Count; wg++) //goes through every genre associated with a single wathced movie
-                    if (userGenres[wg].Genre1.Contains(allGenres[i].Genre1))   //increases count if the watched movie's genre is the same as the genre we are checking (i)
+                    if (userGenres[wg].Genre1.Contains(checkedGenre))   //increases count if the watched movie's genre is the same as the genre we are checking (i)
                     {
                         counter++;
                     }
@@ -66,9 +79,16 @@ namespace FinalProject.Controllers
 
             }
             int genreIndex = genreCounts.IndexOf(genreCounts.Max());  //finds the index of the genre with the highest count (Most watched Genre)
-            return allGenres[genreIndex];
+            return distinctGenres[genreIndex];
+        }
+        public List<string> GetDistinctGenres()
+        {
+            List<string> distinctGenres = new List<string>();
+            distinctGenres = _context.Genre.ToList().Select(p => p.Genre1).Distinct().ToList();
+
+            return distinctGenres;
         }
 
-       
+
     }
 }
