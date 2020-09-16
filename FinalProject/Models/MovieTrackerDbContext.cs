@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
@@ -30,14 +29,16 @@ namespace FinalProject.Models
         public virtual DbSet<Movie> Movie { get; set; }
         public virtual DbSet<MovieActor> MovieActor { get; set; }
         public virtual DbSet<MovieDirector> MovieDirector { get; set; }
+        public virtual DbSet<MovieYear> MovieYear { get; set; }
         public virtual DbSet<UserMovie> UserMovie { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+
             }
         }
 
@@ -204,6 +205,16 @@ namespace FinalProject.Models
                     .IsRequired()
                     .HasColumnName("IMDBId")
                     .HasMaxLength(50);
+            });
+
+            modelBuilder.Entity<MovieYear>(entity =>
+            {
+                entity.Property(e => e.Imdbid)
+                    .IsRequired()
+                    .HasColumnName("IMDBId")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Year).HasMaxLength(4);
             });
 
             modelBuilder.Entity<UserMovie>(entity =>

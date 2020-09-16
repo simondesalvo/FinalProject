@@ -135,6 +135,7 @@ namespace FinalProject.Controllers
                     AddtoGenre(selectedMovie);
                     AddToMovieActor(id, selectedMovie.Actors);
                     AddToMovieDirector(id, selectedMovie.Director);
+                    AddToMovieYear(id, selectedMovie.Year);
                 }
                 else
                 {
@@ -241,6 +242,37 @@ namespace FinalProject.Controllers
                 }
             }
             catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool AddToMovieYear(string imdbId, string Year)
+        {
+            try
+            {
+                MovieYear movieYearExisting = _context.MovieYear.Where(md => md.Imdbid == imdbId).FirstOrDefault();
+                if (movieYearExisting == null)
+                {
+                    // Create a new MovieYear object and fill in the details
+                    MovieYear newEntry = new MovieYear();
+                    newEntry.Imdbid = imdbId;
+                    newEntry.Year = Year;
+
+                    if (ModelState.IsValid)
+                    {
+                        //Add the new MovieYear to the table 
+                        _context.MovieYear.Add(newEntry);
+                        _context.SaveChanges();
+                    }                    
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
             {
                 return false;
             }

@@ -94,6 +94,20 @@ namespace FinalProject.Controllers
 
             return distinctGenres;
         }
+
+        //public List<UserMovie> GetMoviesOfDecade(string year)
+        //{
+        //    string strDecadeFind = year.Substring(0, 3);
+        //    strDecadeFind = strDecadeFind + "0";
+        //    int startYear = int.Parse(strDecadeFind);
+        //    int endYear = startYear + 9;
+
+        //    string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+        //    List<UserMovie> movieIdListOfDecade = _context.MovieYear.Where(umw => int.Parse(umw.Year) >= startYear && int.Parse(umw.Year) <= endYear).ToList();
+        //    return movieIdListOfDecade;
+        //}
+
         //public List<int> GetUserRatings()
         //{
         //    List<byte?> ratings = new List<byte?>();
