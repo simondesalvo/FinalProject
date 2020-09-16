@@ -1,6 +1,9 @@
-﻿@model List<UserMovie>
+﻿@model Dictionary<UserMovie, double>
+<h1>You have wathced a lot of @ViewBag.Genre movies, here's some other you might like</h1>
 
-@foreach(UserMovie m in Model)
+@foreach(UserMovie m in Model.Keys)
 {
     <p>@m.Title</p>
+    <p>User Score: @Model[m]</p>
+
 }
