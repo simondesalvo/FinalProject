@@ -84,6 +84,7 @@ namespace FinalProject.Controllers
                 //movie.MovieId = genre.Imdbid;
                 List<string> distinctGenres = new List<string>();
                 distinctGenres = _context.Genre.ToList().Select(p => p.Genre1).Distinct().ToList();
+                
                 List<string> userIdList = new List<string>();
                 userIdList=_context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
 
@@ -93,6 +94,31 @@ namespace FinalProject.Controllers
                     foreach (Genre g in genreList)
                     {
                         _context.Genre.Remove(g);
+                        _context.SaveChanges();
+                    }
+                }
+                List<string> distinctDirectors = new List<string>();
+                distinctDirectors = _context.MovieDirector.ToList().Select(p => p.Director).Distinct().ToList();
+                userIdList = _context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
+                if (userIdList.Count() == 0)
+                {
+                    List<MovieDirector> directorList = _context.MovieDirector.Where(x => x.Imdbid == movie.MovieId).ToList();
+                    foreach (MovieDirector d in directorList)
+                    {
+                        _context.MovieDirector.Remove(d);
+                        _context.SaveChanges();
+                    }
+                }
+
+                List<string> distinctActors = new List<string>();
+                distinctActors = _context.MovieActor.ToList().Select(p => p.Actor).Distinct().ToList();
+                userIdList = _context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
+                if (userIdList.Count() == 0)
+                {
+                    List<MovieActor> actorList = _context.MovieActor.Where(x => x.Imdbid == movie.MovieId).ToList();
+                    foreach (MovieActor a in actorList)
+                    {
+                        _context.MovieActor.Remove(a);
                         _context.SaveChanges();
                     }
                 }
