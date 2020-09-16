@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
@@ -35,9 +36,9 @@ namespace FinalProject.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            } 
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -195,13 +196,9 @@ namespace FinalProject.Models
 
             modelBuilder.Entity<MovieDirector>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.Property(e => e.Director)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Imdbid)
                     .IsRequired()
