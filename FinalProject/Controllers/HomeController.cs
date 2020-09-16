@@ -84,6 +84,7 @@ namespace FinalProject.Controllers
                 //movie.MovieId = genre.Imdbid;
                 List<string> distinctGenres = new List<string>();
                 distinctGenres = _context.Genre.ToList().Select(p => p.Genre1).Distinct().ToList();
+                
                 List<string> userIdList = new List<string>();
                 userIdList=_context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
 
@@ -93,6 +94,31 @@ namespace FinalProject.Controllers
                     foreach (Genre g in genreList)
                     {
                         _context.Genre.Remove(g);
+                        _context.SaveChanges();
+                    }
+                }
+                List<string> distinctDirectors = new List<string>();
+                distinctDirectors = _context.MovieDirector.ToList().Select(p => p.Director).Distinct().ToList();
+                userIdList = _context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
+                if (userIdList.Count() == 0)
+                {
+                    List<MovieDirector> directorList = _context.MovieDirector.Where(x => x.Imdbid == movie.MovieId).ToList();
+                    foreach (MovieDirector d in directorList)
+                    {
+                        _context.MovieDirector.Remove(d);
+                        _context.SaveChanges();
+                    }
+                }
+
+                List<string> distinctActors = new List<string>();
+                distinctActors = _context.MovieActor.ToList().Select(p => p.Actor).Distinct().ToList();
+                userIdList = _context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
+                if (userIdList.Count() == 0)
+                {
+                    List<MovieActor> actorList = _context.MovieActor.Where(x => x.Imdbid == movie.MovieId).ToList();
+                    foreach (MovieActor a in actorList)
+                    {
+                        _context.MovieActor.Remove(a);
                         _context.SaveChanges();
                     }
                 }
@@ -120,11 +146,13 @@ namespace FinalProject.Controllers
             userMovie.MovieId = selectedMovie.imdbID;
             userMovie.Title = selectedMovie.Title;
             userMovie.Watched = false;
+            userMovie.UserRating = 0;
             
             //Add the new object to the table 
             if(ModelState.IsValid)
             {
                 UserMovie userMovieExisting = _context.UserMovie.Where(um=>um.MovieId == id && um.UserId==loginUserId).FirstOrDefault();
+
                 if (userMovieExisting == null)
                 {
                     ViewBag.MovieExitsInWatchedList = false;
@@ -132,7 +160,8 @@ namespace FinalProject.Controllers
                     _context.SaveChanges();
                     AddtoGenre(selectedMovie);
                     AddToMovieActor(id, selectedMovie.Actors);
-                    //AddToMovieDirector(id, selectedMovie.Director);
+                    AddToMovieDirector(id, selectedMovie.Director);
+                    AddToMovieYear(id, selectedMovie.Year);
                 }
                 else
                 {
@@ -209,40 +238,71 @@ namespace FinalProject.Controllers
             }
         }
 
-        //public bool AddToMovieDirector(string imdbId, string directors)
-        //{
-        //    try
-        //    {
-        //        MovieDirector movieDirectorExisting = _context.MovieDirector.Where(md => md.Imdbid == imdbId).FirstOrDefault();
-        //        if (movieDirectorExisting == null)
-        //        {
-        //            string[] directorArray = SplitString(directors);
-        //            for (int i = 0; i < directorArray.Length; i++)
-        //            {
-        //                // Create a new MovieDirector object and fill in the details
-        //                MovieDirector newEntry = new MovieDirector();
-        //                newEntry.Imdbid = imdbId;
-        //                newEntry.Director = directorArray[i].Trim();
+        public bool AddToMovieDirector(string imdbId, string directors)
+        {
+            try
+            {
+                MovieDirector movieDirectorExisting = _context.MovieDirector.Where(md => md.Imdbid == imdbId).FirstOrDefault();
+                if (movieDirectorExisting == null)
+                {
+                    string[] directorArray = SplitString(directors);
+                    for (int i = 0; i < directorArray.Length; i++)
+                    {
+                        // Create a new MovieDirector object and fill in the details
+                        MovieDirector newEntry = new MovieDirector();
+                        newEntry.Imdbid = imdbId;
+                        newEntry.Director = directorArray[i].Trim();
 
-        //                if (ModelState.IsValid)
-        //                {
-        //                    //Add the new MovieDirector to the table 
-        //                    _context.MovieDirector.Add(newEntry);
-        //                    _context.SaveChanges();
-        //                }
-        //            }
-        //            return true;
-        //        }
-        //        else
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return false;
-        //    }
-        //}
+                        if (ModelState.IsValid)
+                        {
+                            //Add the new MovieDirector to the table 
+                            _context.MovieDirector.Add(newEntry);
+                            _context.SaveChanges();
+                        }
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        public bool AddToMovieYear(string imdbId, string Year)
+        {
+            try
+            {
+                MovieYear movieYearExisting = _context.MovieYear.Where(md => md.Imdbid == imdbId).FirstOrDefault();
+                if (movieYearExisting == null)
+                {
+                    // Create a new MovieYear object and fill in the details
+                    MovieYear newEntry = new MovieYear();
+                    newEntry.Imdbid = imdbId;
+                    newEntry.Year = Year;
+
+                    if (ModelState.IsValid)
+                    {
+                        //Add the new MovieYear to the table 
+                        _context.MovieYear.Add(newEntry);
+                        _context.SaveChanges();
+                    }                    
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         public string[] SplitString(string strInput)
         {
