@@ -28,21 +28,16 @@ namespace FinalProject.Models
         public virtual DbSet<Genre> Genre { get; set; }
         public virtual DbSet<Movie> Movie { get; set; }
         public virtual DbSet<MovieActor> MovieActor { get; set; }
+        public virtual DbSet<MovieDirector> MovieDirector { get; set; }
         public virtual DbSet<UserMovie> UserMovie { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-
-
-
-
-
-
-            }
+            } 
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -196,12 +191,22 @@ namespace FinalProject.Models
                     .IsRequired()
                     .HasColumnName("IMDBId")
                     .HasMaxLength(50);
+            });
 
-                entity.HasOne(d => d.Imdb)
-                    .WithMany(p => p.MovieActor)
-                    .HasForeignKey(d => d.Imdbid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__MovieActo__IMDBI__123EB7A3");
+            modelBuilder.Entity<MovieDirector>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.Director)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Imdbid)
+                    .IsRequired()
+                    .HasColumnName("IMDBId")
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<UserMovie>(entity =>

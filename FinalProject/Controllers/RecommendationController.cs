@@ -36,20 +36,26 @@ namespace FinalProject.Controllers
         public IActionResult Recommended()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
+            List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList(); //list of movies wathced by a user
            
             string mostViewedGenre= GetMostWatchedGenre();
             List<UserMovie> movieByGenre = new List<UserMovie>();
 
-            List<Genre> allGenres = _context.Genre.Where(g => g.Genre1==mostViewedGenre).ToList();
-            for (int g = 0; g < allGenres.Count; g++)
+            List<Genre> allGenres = _context.Genre.Where(g => g.Genre1==mostViewedGenre).ToList();  //gets every instance of the most wathced genre
+            for (int g = 0; g < allGenres.Count; g++)  //goes through each instance of the most watched genre
             {
                 Genre watchedGenre = allGenres[g];
-                List<UserMovie> findMovie = _context.UserMovie.Where(r => r.MovieId == watchedGenre.Imdbid).ToList();
+                List<UserMovie> findMovie = _context.UserMovie.Where(r => r.MovieId == watchedGenre.Imdbid).ToList();   //gets the user movies associated with that instance of the most watched genre
                 movieByGenre.Add(findMovie[0]);
             }
-            List<UserMovie> recommendedMovies = movieByGenre.Except(watchedMovies).ToList();
-            recommendedMovies.Select(x => x.MovieId).Distinct();
+            List<UserMovie> recommendedMovies = movieByGenre.Except(watchedMovies).ToList();    //excludes the movies the user has already watched
+           // recommendedMovies.Select(x => x.MovieId).Distinct();  //makes sure the same movie doesn't show up multiple times
+           // List<UserMovie> sortedRecommended = recommendedMovies.OrderBy(o => o.UserRating).ToList(); //sorts by user rating
+            
+            List<byte?> ratings= new List<byte?>();
+            ratings = recommendedMovies.Select(r => r.UserRating).ToList();
+
+
             return View(recommendedMovies);
         }
 
@@ -88,6 +94,31 @@ namespace FinalProject.Controllers
 
             return distinctGenres;
         }
+        //public List<int> GetUserRatings()
+        //{
+        //    List<byte?> ratings = new List<byte?>();
+        //    ratings= _context.UserMovie.Select(u => u.UserRating).ToList();
+        //    List<byte?> ratingByMovie= ratings.Where()
+        //}
+
+        //public byte? GetAverageRating(UserMovie movie)
+        //{
+        //    List<byte?> ratings = new List<byte?>();
+        //    List<UserMovie> allMovies = _context.UserMovie.Where(u=> u.MovieId==movie.MovieId).ToList();
+        //    foreach (UserMovie m in allMovies)
+        //    {
+        //        ratings.Add(m.UserRating);
+        //    }
+
+        //    byte? total = 0;
+        //    foreach(byte? b in ratings)
+        //    {
+        //        total += b;
+        //    }
+        //    byte? number = ratings.Count();
+        //    byte? average = total / ratings.Count();
+            
+        //}
 
 
     }

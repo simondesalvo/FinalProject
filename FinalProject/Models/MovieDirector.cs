@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace FinalProject.Models
 {
-    public partial class MovieActor
+    public partial class MovieDirector
     {
-        public string Actor { get; set; }
-        public string Imdbid { get; set; }
         public int Id { get; set; }
+        public string Imdbid { get; set; }
+        public string Director { get; set; }
     }
 }
