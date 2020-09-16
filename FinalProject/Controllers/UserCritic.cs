@@ -26,9 +26,9 @@ namespace FinalProject.Controllers
         }
 
         //api call
-        public async Task<IActionResult> MovieSelection(string id)
+        public IActionResult MovieSelection(string id)
         {
-            var selection = await _movieDAL.SecondGetMovieInfo($"{id}");
+            var selection = _movieDAL.SecondGetMovieInfo($"{id}");
             return View(selection);
 
         }
@@ -38,16 +38,32 @@ namespace FinalProject.Controllers
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == userId).ToList();
-            List<UserMovie> userList = new List<UserMovie>();
-            foreach (UserMovie m in savedMovies)
+            
+            List<PopcornMovie> popList = new List<PopcornMovie>();
+
+            UserPopcorn userPop = new UserPopcorn();
+
+            List<UserPopcorn> upList = new List<UserPopcorn>();
+            
+            foreach (UserMovie u in savedMovies)
             {
-                userList.Add(m);
+                PopcornMovie pop = new PopcornMovie();
+                pop = (PopcornMovie)MovieSelection($"{u.MovieId}");
+                popList.Add(pop);
             }
-            //list of movies user has saved
+
+            userPop.UserMovies = savedMovies;
+            userPop.PopcornMovies = popList;
 
 
+            //foreach loop getting list of popcorn movie
+            //combined class of UserPopcorn, make list of?
+            //in view display, titel, user rating, popcorn metacritic rating, if higher
+            //say "Y'all have weird taste, maybe watch some AFI top 100 and try again"
+            //if lower "critics were wrong I guess"
 
-            return View();
+
+            return View(userPop);
         }
     }
 }

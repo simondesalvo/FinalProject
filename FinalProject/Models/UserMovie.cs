@@ -11,7 +11,9 @@ namespace FinalProject.Models
         public bool? Watched { get; set; }
         public string WatchLocation { get; set; }
         public DateTime? WatchYear { get; set; }
-        public byte? UserRating { get; set; }
+
+        public int? UserRating { get; set; }
+
         public string UserReview { get; set; }
         public int? WatchedTogetherId { get; set; }
         public string Title { get; set; }

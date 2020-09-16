@@ -1,3 +1,28 @@
 ﻿@{
-    ViewData["Title"] = "User-Critic Comparison Matrix";
+    ViewData["Title"] = "User Ratings v. Metacritic";
 }
+@model UserPopcorn
+
+<table>
+    <tr>
+        <th>Movie Title</th>
+        <th>User Rating</th>
+        <th>Metacritic Score</th>
+        <th>Disgrintled Blockbuster Employee's opinion of your taste</th>
+    </tr>
+
+    @for (int i = 0; i < Model.UserMovies.Count; i++)
+    {
+<tr>
+    <th>@Model.UserMovies[i].Title</th>
+    <th>@Model.UserMovies[i].UserRating</th>
+    <th>@Model.PopcornMovies[i].Metascore</th>
+    @*@if (@Model.UserMovies[i].UserRating < @Model.PopcornMovies[i].Metascore)
+    {
+
+    }*@
+
+</tr>
+    }
+   }
+</table>
