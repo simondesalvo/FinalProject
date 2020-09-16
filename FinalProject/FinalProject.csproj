@@ -22,9 +22,56 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Home\UpdateMovie.cshtml" />
+    <Folder Include="Views\UserCritic\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\UserCritic\" />
+    <None Remove="FinalProject.csproj.user" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="obj\Debug\netcoreapp3.1\staticwebassets\FinalProject.StaticWebAssets.Manifest.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\staticwebassets\FinalProject.StaticWebAssets.xml" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.AssemblyInfoInputs.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.assets.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.csproj.CopyComplete" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.csproj.FileListAbsolute.txt" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.csprojAssemblyReference.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.dll" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.genruntimeconfig.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.MvcApplicationPartsAssemblyInfo.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.pdb" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.RazorAssemblyInfo.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.RazorCoreGenerate.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.RazorTargetAssemblyInfo.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.TagHelpers.input.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.TagHelpers.output.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.Views.dll" />
+    <None Include="obj\Debug\netcoreapp3.1\FinalProject.Views.pdb" />
+    <None Include="obj\FinalProject.csproj.nuget.dgspec.json" />
+    <None Include="obj\FinalProject.csproj.nuget.g.props" />
+    <None Include="obj\FinalProject.csproj.nuget.g.targets" />
+    <None Include="obj\project.assets.json" />
+    <None Include="obj\project.nuget.cache" />
+    <None Include="FinalProject.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\DisplayList.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\MovieSelection.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\Search.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Home\SearchResult.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LoginPartial.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\.NETCoreApp,Version=v3.1.AssemblyAttributes.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\FinalProject.AssemblyInfo.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\FinalProject.MvcApplicationPartsAssemblyInfo.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\FinalProject.RazorAssemblyInfo.cs" />
+    <Compile Include="obj\Debug\netcoreapp3.1\FinalProject.RazorTargetAssemblyInfo.cs" />
   </ItemGroup>
 </Project>
