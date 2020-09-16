@@ -58,6 +58,7 @@ namespace FinalProject.Controllers
 
             //foreach loop getting list of popcorn movie
             //combined class of UserPopcorn, make list of?
+            //int try parse if/else statement on metacritic rating
             //in view display, titel, user rating, popcorn metacritic rating, if higher
             //say "Y'all have weird taste, maybe watch some AFI top 100 and try again"
             //if lower "critics were wrong I guess"
