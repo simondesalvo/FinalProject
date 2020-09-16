@@ -57,6 +57,7 @@ namespace FinalProject.Controllers
         public IActionResult DisplayList()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
             List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
             List<UserMovie> userList = new List<UserMovie>();
             foreach (UserMovie m in savedMovies)
@@ -78,15 +79,23 @@ namespace FinalProject.Controllers
             {
                 movie.UserId = userId;
                 movie = _context.UserMovie.Where(x => x.Id == id).First();
-                //movie.MovieId = genre.Imdbid;
-                List<Genre> genreList = _context.Genre.Where(x => x.Imdbid == movie.MovieId).ToList();
-                foreach (Genre g in genreList)
-                {
-                    _context.Genre.Remove(g);
-                    _context.SaveChanges();
-                }
                 _context.UserMovie.Remove(movie);
                 _context.SaveChanges();
+                //movie.MovieId = genre.Imdbid;
+                List<string> distinctGenres = new List<string>();
+                distinctGenres = _context.Genre.ToList().Select(p => p.Genre1).Distinct().ToList();
+                List<string> userIdList = new List<string>();
+                userIdList=_context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
+
+                if (userIdList.Count() == 0)
+                {
+                    List<Genre> genreList = _context.Genre.Where(x => x.Imdbid == movie.MovieId).ToList();
+                    foreach (Genre g in genreList)
+                    {
+                        _context.Genre.Remove(g);
+                        _context.SaveChanges();
+                    }
+                }
                 return RedirectToAction("DisplayList");
             }
             catch
@@ -95,8 +104,7 @@ namespace FinalProject.Controllers
             }
         }
 
-        
-       
+
 
 
         //add movie to list
@@ -116,7 +124,7 @@ namespace FinalProject.Controllers
             //Add the new object to the table 
             if(ModelState.IsValid)
             {
-                UserMovie userMovieExisting = _context.UserMovie.Where(um=>um.MovieId == id).FirstOrDefault();
+                UserMovie userMovieExisting = _context.UserMovie.Where(um=>um.MovieId == id && um.UserId==loginUserId).FirstOrDefault();
                 if (userMovieExisting == null)
                 {
                     ViewBag.MovieExitsInWatchedList = false;

@@ -12,7 +12,7 @@ namespace FinalProject.Models
         public string WatchLocation { get; set; }
         public DateTime? WatchYear { get; set; }
 
-        public int? UserRating { get; set; }
+        public int UserRating { get; set; }
 
         public string UserReview { get; set; }
         public int? WatchedTogetherId { get; set; }

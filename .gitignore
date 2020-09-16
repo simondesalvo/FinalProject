@@ -3,3 +3,5 @@ obj/
 .vs/
 appsettings.json
 appsettings.Development.json
+FinalProject.csproj
+FinalProject.csproj.user
