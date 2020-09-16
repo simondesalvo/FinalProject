@@ -124,7 +124,7 @@ namespace FinalProject.Controllers
                     _context.SaveChanges();
                     AddtoGenre(selectedMovie);
                     AddToMovieActor(id, selectedMovie.Actors);
-                    AddToMovieDirector(id, selectedMovie.Director);
+                    //AddToMovieDirector(id, selectedMovie.Director);
                 }
                 else
                 {
@@ -201,40 +201,40 @@ namespace FinalProject.Controllers
             }
         }
 
-        public bool AddToMovieDirector(string imdbId, string directors)
-        {
-            try
-            {
-                MovieDirector movieDirectorExisting = _context.MovieDirector.Where(md => md.Imdbid == imdbId).FirstOrDefault();
-                if (movieDirectorExisting == null)
-                {
-                    string[] directorArray = SplitString(directors);
-                    for (int i = 0; i < directorArray.Length; i++)
-                    {
-                        // Create a new MovieDirector object and fill in the details
-                        MovieDirector newEntry = new MovieDirector();
-                        newEntry.Imdbid = imdbId;
-                        newEntry.Director = directorArray[i].Trim();
+        //public bool AddToMovieDirector(string imdbId, string directors)
+        //{
+        //    try
+        //    {
+        //        MovieDirector movieDirectorExisting = _context.MovieDirector.Where(md => md.Imdbid == imdbId).FirstOrDefault();
+        //        if (movieDirectorExisting == null)
+        //        {
+        //            string[] directorArray = SplitString(directors);
+        //            for (int i = 0; i < directorArray.Length; i++)
+        //            {
+        //                // Create a new MovieDirector object and fill in the details
+        //                MovieDirector newEntry = new MovieDirector();
+        //                newEntry.Imdbid = imdbId;
+        //                newEntry.Director = directorArray[i].Trim();
 
-                        if (ModelState.IsValid)
-                        {
-                            //Add the new MovieDirector to the table 
-                            _context.MovieDirector.Add(newEntry);
-                            _context.SaveChanges();
-                        }
-                    }
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-        }
+        //                if (ModelState.IsValid)
+        //                {
+        //                    //Add the new MovieDirector to the table 
+        //                    _context.MovieDirector.Add(newEntry);
+        //                    _context.SaveChanges();
+        //                }
+        //            }
+        //            return true;
+        //        }
+        //        else
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public string[] SplitString(string strInput)
         {
