@@ -3,9 +3,5 @@ obj/
 .vs/
 appsettings.json
 appsettings.Development.json
-<<<<<<< HEAD
-FinalProject.csproj
-=======
 FinalProject.csproj
 FinalProject.csproj.user
->>>>>>> 909cb54bc83a7f9a833edf054b38776e7d20fc1b
