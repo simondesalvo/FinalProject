@@ -101,23 +101,23 @@ namespace FinalProject.Controllers
         //    List<byte?> ratingByMovie= ratings.Where()
         //}
 
-        //public byte? GetAverageRating(UserMovie movie)
+        //public int GetAverageRating(UserMovie movie)
         //{
-        //    List<byte?> ratings = new List<byte?>();
-        //    List<UserMovie> allMovies = _context.UserMovie.Where(u=> u.MovieId==movie.MovieId).ToList();
+        //    List<int> ratings = new List<int>();
+        //    List<UserMovie> allMovies = _context.UserMovie.Where(u => u.MovieId == movie.MovieId).ToList();
         //    foreach (UserMovie m in allMovies)
         //    {
         //        ratings.Add(m.UserRating);
         //    }
 
         //    byte? total = 0;
-        //    foreach(byte? b in ratings)
+        //    foreach (int i in ratings)
         //    {
         //        total += b;
         //    }
-        //    byte? number = ratings.Count();
-        //    byte? average = total / ratings.Count();
-            
+        //    int number = ratings.Count();
+        //    int average = total / ratings.Count();
+
         //}
 
 
