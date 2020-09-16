@@ -52,8 +52,8 @@ namespace FinalProject.Controllers
            // recommendedMovies.Select(x => x.MovieId).Distinct();  //makes sure the same movie doesn't show up multiple times
            // List<UserMovie> sortedRecommended = recommendedMovies.OrderBy(o => o.UserRating).ToList(); //sorts by user rating
             
-            List<byte?> ratings= new List<byte?>();
-            ratings = recommendedMovies.Select(r => r.UserRating).ToList();
+            //List<byte?> ratings= new List<byte?>();
+            //ratings = recommendedMovies.Select(r => r.UserRating).ToList();
 
 
             return View(recommendedMovies);
