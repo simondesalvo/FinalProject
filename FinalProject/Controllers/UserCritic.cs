@@ -26,15 +26,15 @@ namespace FinalProject.Controllers
         }
 
         //api call
-        public IActionResult MovieSelection(string id)
+        public async Task<PopcornMovie> MovieSelection(string id)
         {
-            var selection = _movieDAL.SecondGetMovieInfo($"{id}");
-            return View(selection);
+            var selection = await _movieDAL.SecondGetMovieInfo($"{id}");
+            return selection;
 
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == userId).ToList();
@@ -48,9 +48,10 @@ namespace FinalProject.Controllers
             foreach (UserMovie u in savedMovies)
             {
                 PopcornMovie pop = new PopcornMovie();
-                pop = (PopcornMovie)MovieSelection($"{u.MovieId}");
+                pop = await MovieSelection($"{u.MovieId}");
+                //breaks on second call
                 int intScore;
-                bool isValid = Int32.TryParse(pop.Metascore, out intScore);
+                bool isValid = int.TryParse(pop.Metascore.ToString(), out intScore);
                 if (isValid == true)
                 {
                     popList.Add(pop);
