@@ -77,13 +77,17 @@ namespace FinalProject.Controllers
             Genre genre = new Genre();
             try
             {
+                //deleting a movie from the user's list
                 movie.UserId = userId;
                 movie = _context.UserMovie.Where(x => x.Id == id).First();
                 _context.UserMovie.Remove(movie);
                 _context.SaveChanges();
-                //movie.MovieId = genre.Imdbid;
+
+
+                //deleting the movie from the genre table if another user doesn't have it in their list
+                //prevents errors in our recommendation algorithm
                 List<string> distinctGenres = new List<string>();
-                distinctGenres = _context.Genre.ToList().Select(p => p.Genre1).Distinct().ToList();
+                distinctGenres = _context.Genre.ToList().Select(g => g.Genre1).Distinct().ToList();
                 
                 List<string> userIdList = new List<string>();
                 userIdList=_context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
@@ -97,8 +101,11 @@ namespace FinalProject.Controllers
                         _context.SaveChanges();
                     }
                 }
+
+                //deleting the director from director table if another user doesn't have that movie in their list
+                //prevents errors in our recommendation algorithm
                 List<string> distinctDirectors = new List<string>();
-                distinctDirectors = _context.MovieDirector.ToList().Select(p => p.Director).Distinct().ToList();
+                distinctDirectors = _context.MovieDirector.ToList().Select(d => d.Director).Distinct().ToList();
                 userIdList = _context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
                 if (userIdList.Count() == 0)
                 {
@@ -110,8 +117,10 @@ namespace FinalProject.Controllers
                     }
                 }
 
+                //deleting the actors from actor table if another user doesn't have that movie in their list
+                //prevents errors in our recommendation algorithm
                 List<string> distinctActors = new List<string>();
-                distinctActors = _context.MovieActor.ToList().Select(p => p.Actor).Distinct().ToList();
+                distinctActors = _context.MovieActor.ToList().Select(a => a.Actor).Distinct().ToList();
                 userIdList = _context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
                 if (userIdList.Count() == 0)
                 {
@@ -119,6 +128,21 @@ namespace FinalProject.Controllers
                     foreach (MovieActor a in actorList)
                     {
                         _context.MovieActor.Remove(a);
+                        _context.SaveChanges();
+                    }
+                }
+
+                //deleting the year from year table if another user doesn't have that movie in their list
+                //prevents errors in our recommendation algorithm
+                List<string> distinctYear = new List<string>();
+                distinctYear = _context.MovieYear.ToList().Select(y => y.Year).Distinct().ToList();
+                userIdList = _context.UserMovie.Where(um => um.MovieId == movie.MovieId).Select(p => p.UserId).Distinct().ToList();
+                if (userIdList.Count() == 0)
+                {
+                    List<MovieYear> yearList = _context.MovieYear.Where(x => x.Imdbid == movie.MovieId).ToList();
+                    foreach (MovieYear y in yearList)
+                    {
+                        _context.MovieYear.Remove(y);
                         _context.SaveChanges();
                     }
                 }

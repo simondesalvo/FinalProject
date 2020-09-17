@@ -26,15 +26,15 @@ namespace FinalProject.Controllers
         }
 
         //api call
-        public IActionResult MovieSelection(string id)
+        public async Task<PopcornMovie> MovieSelection(string id)
         {
-            var selection = _movieDAL.SecondGetMovieInfo($"{id}");
-            return View(selection);
+            var selection = await _movieDAL.SecondGetMovieInfo($"{id}");
+            return selection;
 
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == userId).ToList();
@@ -48,8 +48,19 @@ namespace FinalProject.Controllers
             foreach (UserMovie u in savedMovies)
             {
                 PopcornMovie pop = new PopcornMovie();
-                pop = (PopcornMovie)MovieSelection($"{u.MovieId}");
-                popList.Add(pop);
+                pop = await MovieSelection($"{u.MovieId}");
+                //breaks on second call
+                int intScore;
+                bool isValid = int.TryParse(pop.Metascore.ToString(), out intScore);
+                if (isValid == true)
+                {
+                    popList.Add(pop);
+                }
+                else
+                {
+                    savedMovies.Remove(u);
+                }
+                
             }
 
             userPop.UserMovies = savedMovies;
@@ -58,6 +69,7 @@ namespace FinalProject.Controllers
 
             //foreach loop getting list of popcorn movie
             //combined class of UserPopcorn, make list of?
+            //int try parse if/else statement on metacritic rating
             //in view display, titel, user rating, popcorn metacritic rating, if higher
             //say "Y'all have weird taste, maybe watch some AFI top 100 and try again"
             //if lower "critics were wrong I guess"

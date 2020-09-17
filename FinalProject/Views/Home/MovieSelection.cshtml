@@ -2,19 +2,24 @@
     ViewData["Title"] = "Movie Selection";
 }
 @model PopcornMovie
-    
-        <p>@Model.Title</p>
-        <br />
-        <img src="@Model.Poster" width="500" height="600" />
-        <br />
-        <p>@Model.Plot</p>
-        <br />
-        <p>Metacritic rating: @Model.Metascore</p>
-        <p>@Model.Actors</p>
-        <p><a href="../Recommendation/GetMoviesByDirector?name=@Model.Director">@Model.Director</a></p>
-        <a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a>
+<p>@Model.Title</p>
+<br />
+<img src="@Model.Poster" width="200" height="300" />
+<br />
+<p>@Model.Plot</p>
+<br />
+<p>@Model.Genre</p>
+<br />
+<p><a href="../Recommendation/GetMoviesByDirector?name=@Model.Director">@Model.Director</a></p>
+<br />
+<p>@Model.Actors</p>
+<a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a>
+<a href="../Recommendation/GetMoviesOfDecade?year=@Model.Year">Get other movies of this decade</a>
 
-        <a href="../Recommendation/GetMoviesOfDecade?year=@Model.Year">Get other movies of this decade</a>
+
+
+
+
 
 
 
