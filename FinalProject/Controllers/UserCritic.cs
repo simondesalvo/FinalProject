@@ -49,7 +49,17 @@ namespace FinalProject.Controllers
             {
                 PopcornMovie pop = new PopcornMovie();
                 pop = (PopcornMovie)MovieSelection($"{u.MovieId}");
-                popList.Add(pop);
+                int intScore;
+                bool isValid = Int32.TryParse(pop.Metascore, out intScore);
+                if (isValid == true)
+                {
+                    popList.Add(pop);
+                }
+                else
+                {
+                    savedMovies.Remove(u);
+                }
+                
             }
 
             userPop.UserMovies = savedMovies;

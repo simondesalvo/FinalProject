@@ -3,18 +3,20 @@
 }
 @model PopcornMovie
     
-        <p>@Model.Title</p>
-        <br />
-        <img src="@Model.Poster" width="500" height="600" />
-        <br />
-        <p>@Model.Plot</p>
-        <br />
-        <p>Metacritic rating: @Model.Metascore</p>
-        <p>@Model.Actors</p>
+<p>@Model.Title</p>
+<br />
+<br />
+<p>@Model.Plot</p>
+<br />
+<p>@Model.Genre</p>
+<br />
+<p>@Model.Director</p>
+<br />
+<p>@Model.Actors</p>
 
-        <a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a>
+<a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a>
 
-        <a href="../Recommendation/GetMoviesOfDecade?year=@Model.Year">Get other movies of this decade</a>
+<a href="../Recommendation/GetMoviesOfDecade?year=@Model.Year">Get other movies of this decade</a>
 
 
 
