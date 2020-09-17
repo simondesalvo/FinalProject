@@ -135,7 +135,7 @@ namespace FinalProject.Controllers
 
             //exclude the movies the user has already watched
             List<UserMovie> recommendedMovies = moviesOfDecade.Except(watchedMovies).ToList();
-            return View("../Recommendation/Recommended", recommendedMovies);
+            return View(recommendedMovies);
         }
 
         public IActionResult GetMoviesByDirector(string name)

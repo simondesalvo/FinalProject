@@ -1,0 +1,17 @@
+﻿@model List<UserMovie>
+@{
+    ViewData["Title"] = "GetMoviesOfDecade";
+}
+
+<h4>Recommended other Movies Of the Decade</h4>
+@if(Model.Count == 0)
+{
+    <p>No movies found!</p>
+}
+else
+{
+    foreach(UserMovie um in Model)
+    {
+        <p>@um.Title</p> 
+    }
+}
