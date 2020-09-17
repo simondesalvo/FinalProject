@@ -18,14 +18,14 @@
     <th>@Model.UserMovies[i].Title</th>
     <th>@Model.UserMovies[i].UserRating</th>
     <th>@Model.PopcornMovies[i].Metascore</th>
-    @if (@Model.UserMovies[i].UserRating != @Model.PopcornMovies[i].Metascore)
+    @*@if (@Model.UserMovies[i].UserRating != @Model.PopcornMovies[i].Metascore)
     {
        <th>Critics sure are wrong, huh?</th>
     }
     else
     {
         <th>Whoa this almost never happens. Pat yourself on the back.</th>
-    }
+    }*@
 
 </tr>
     }
