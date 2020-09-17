@@ -11,10 +11,12 @@
         <br />
         <p>Metacritic rating: @Model.Metascore</p>
         <p>@Model.Actors</p>
+        <p>@Model.Year</p>
+        <p><a href="../Recommendation/GetMoviesByDirector?name=@Model.Director">@Model.Director</a></p>
 
-        <a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a>
+        <p><a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a></p>
 
-        <a href="../Recommendation/GetMoviesOfDecade?year=@Model.Year">Get other movies of this decade</a>
+        <p><a href="../Recommendation/GetMoviesOfDecade?year=@Model.Year&movieId=@Model.imdbID">Get other movies of this decade</a></p>
 
 
 

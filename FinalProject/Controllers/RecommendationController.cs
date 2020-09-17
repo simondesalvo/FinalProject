@@ -95,17 +95,53 @@ namespace FinalProject.Controllers
             return distinctGenres;
         }
 
-        //public List<UserMovie> GetMoviesOfDecade(string year)
+        public IActionResult GetMoviesOfDecade(string year, string movieId)
+        {
+            string strDecadeFind = year.Substring(0, 3);
+            strDecadeFind = strDecadeFind + "0";
+            int startYear = int.Parse(strDecadeFind);
+            int endYear = startYear + 9;
+
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            List<string> movieIdListOfDecade = _context.MovieYear.Where(umw => Convert.ToInt32(umw.Year) >= startYear && Convert.ToInt32(umw.Year) <= endYear).ToList().Select(m=>m.Imdbid).Distinct().ToList();
+
+            //Get all the movies of that decade 
+            List<UserMovie> moviesOfDecade = new List<UserMovie>();
+            foreach(string movId in movieIdListOfDecade)
+            {
+                UserMovie findMovie = _context.UserMovie.Where(um => um.MovieId == movId).FirstOrDefault();
+                if(findMovie != null)
+                {
+                    moviesOfDecade.Add(findMovie);
+                }
+            }
+
+            // Get all movies that the login user has watched except the current movie
+            //List<UserMovie> watchedMovies = _context.UserMovie.Where(um => um.UserId == id && um.Watched ==true && um.MovieId != movieId).ToList();
+            List<UserMovie> watchedMovies = _context.UserMovie.Where(um => (um.UserId == id && um.Watched == true) || um.MovieId == movieId).ToList();
+
+            //exclude the movies the user has already watched
+            List<UserMovie> recommendedMovies = moviesOfDecade.Except(watchedMovies).ToList();    
+            return View("../Recommendation/Recommended",recommendedMovies);
+        }
+
+        //public async Task<IActionResult> SearchResultByIMDBId(List<string> imdbIdList)
         //{
-        //    string strDecadeFind = year.Substring(0, 3);
-        //    strDecadeFind = strDecadeFind + "0";
-        //    int startYear = int.Parse(strDecadeFind);
-        //    int endYear = startYear + 9;
-
-        //    string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-        //    List<UserMovie> movieIdListOfDecade = _context.MovieYear.Where(umw => int.Parse(umw.Year) >= startYear && int.Parse(umw.Year) <= endYear).ToList();
-        //    return movieIdListOfDecade;
+        //    List<MovieSearch> movies = new List<MovieSearch>();
+        //    if(imdbIdList != null && imdbIdList.Count > 0)
+        //    {
+        //        foreach(string movieId in imdbIdList)
+        //        {
+        //            APIMovie movie = await _movieDAL.GetMovieInfo($"{movieId}");
+        //            if(movie != null)
+        //            {
+        //                movies.Add(movie);
+        //            }
+        //        }
+        //    }
+            
+        //    return View("SearchResult", movies);
         //}
 
         //public List<int> GetUserRatings()

@@ -1,6 +1,13 @@
 ﻿@model List<UserMovie>
 
-@foreach(UserMovie m in Model)
+@if (Model.Count == 0)
 {
-    <p>@m.Title</p>
+    <p>No Matches Found! Please search again </p>
+}
+else
+{
+    @foreach (UserMovie m in Model)
+    {
+        <p>@m.Title</p>
+    }
 }

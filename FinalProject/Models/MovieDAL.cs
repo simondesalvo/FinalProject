@@ -59,7 +59,7 @@ namespace FinalProject.Models
 
             return moviesList;
         }
-
+                
         public async Task<APIMovie> GetMovieInfo(string imdb)
         {
             var client = GetClient();
