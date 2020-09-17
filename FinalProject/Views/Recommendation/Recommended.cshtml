@@ -1,5 +1,7 @@
-﻿@model List<UserMovie>
+﻿@model Dictionary<UserMovie, double>
+<h1>You have wathced a lot of @ViewBag.Genre movies, here's some other you might like</h1>
 
+<<<<<<< HEAD
 @if (Model.Count == 0)
 {
     <p>No Matches Found! Please search again </p>
@@ -10,4 +12,11 @@ else
     {
         <p>@m.Title</p>
     }
+=======
+@foreach(UserMovie m in Model.Keys)
+{
+    <p>@m.Title</p>
+    <p>User Score: @Model[m]</p>
+
+>>>>>>> 4d6ed3cef15aa7285768886a01792cc9f60e31e6
 }
