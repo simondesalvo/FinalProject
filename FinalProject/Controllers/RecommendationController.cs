@@ -116,7 +116,7 @@ namespace FinalProject.Controllers
 
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            List<string> movieIdListOfDecade = _context.MovieYear.Where(umw => Convert.ToInt32(umw.Year) >= startYear && Convert.ToInt32(umw.Year) <= endYear).ToList().Select(m=>m.Imdbid).Distinct().ToList();
+            List<string> movieIdListOfDecade = _context.MovieYear.Where(umw => Convert.ToInt32(umw.Year) >= startYear && Convert.ToInt32(umw.Year) <= endYear && umw.Imdbid != movieId).ToList().Select(m=>m.Imdbid).Distinct().ToList();
 
             //Get all the movies of that decade 
             List<UserMovie> moviesOfDecade = new List<UserMovie>();
@@ -129,9 +129,31 @@ namespace FinalProject.Controllers
                 }
             }
 
-            // Get all movies that the login user has watched except the current movie
+            // Get all movies that the login user has watched 
             //List<UserMovie> watchedMovies = _context.UserMovie.Where(um => um.UserId == id && um.Watched ==true && um.MovieId != movieId).ToList();
-            List<UserMovie> watchedMovies = _context.UserMovie.Where(um => (um.UserId == id && um.Watched == true) || um.MovieId == movieId).ToList();
+            List<string> watchedMovieIds = _context.UserMovie.Where(um => um.UserId == id && um.Watched == true).Select(i=>i.MovieId).ToList();
+            // Among these make a list of movies that fall in the search decade
+            List<string> watchedMovieIdsOfDecade = new List<string>();
+            foreach(string movieid in watchedMovieIds)
+            {
+                if(movieIdListOfDecade.Contains(movieid))
+                {
+                    watchedMovieIdsOfDecade.Add(movieid);
+                }
+            }
+
+            //Get the movie details of the watched movies
+            List<UserMovie> watchedMovies = new List<UserMovie>();
+            foreach (string mId in watchedMovieIdsOfDecade)
+            {
+                UserMovie findWatchedMovie = _context.UserMovie.Where(um => um.MovieId == mId).FirstOrDefault();
+                if (findWatchedMovie != null)
+                {
+                    watchedMovies.Add(findWatchedMovie);
+                }
+            }
+            //List<UserMovie> watchedMovies = _context.UserMovie.Where(um => um.UserId == id && um.Watched == true).ToList();
+
 
             //exclude the movies the user has already watched
             List<UserMovie> recommendedMovies = moviesOfDecade.Except(watchedMovies).ToList();
