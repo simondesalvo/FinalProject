@@ -59,11 +59,8 @@ namespace FinalProject.Controllers
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
-            List<UserMovie> userList = new List<UserMovie>();
-            foreach (UserMovie m in savedMovies)
-            {
-                userList.Add(m);
-            }
+            List<UserMovie> userList = savedMovies.OrderBy(m => m.Title).ToList();
+            
             return View(userList);
         }
 
@@ -179,7 +176,7 @@ namespace FinalProject.Controllers
 
                 if (userMovieExisting == null)
                 {
-                    ViewBag.MovieExitsInWatchedList = false;
+                    TempData["MovieExistsCheck"] = "Successfully added!";
                     _context.UserMovie.Add(userMovie);
                     _context.SaveChanges();
                     AddtoGenre(selectedMovie);
@@ -189,7 +186,7 @@ namespace FinalProject.Controllers
                 }
                 else
                 {
-                    ViewBag.MovieExitsInWatchedList = true;
+                    TempData["MovieExistsCheck"] = "Movie already exists in your list!";
                 }                
             }
             return RedirectToAction("DisplayList");
