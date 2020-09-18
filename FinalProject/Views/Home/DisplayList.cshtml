@@ -30,7 +30,7 @@
             <td>@m.WatchLocation</td>
             @if (m.WatchYear != null)
             {
-                <td>@m.WatchYear.ToString().Remove(8)</td>
+                <td>@m.WatchYear.ToString().Remove(10).TrimEnd('1')</td>
             }
             else
             {
