@@ -21,13 +21,13 @@
         <input type="text" id ="WatchLocation" name="WatchLocation" value="@Model.WatchLocation" placeholder="Where did you watch it?" />
         <br />
         <p>When did you watch it?</p>
-        <input type="date" id="WatchYear" name="WatchYear" value="@Model.WatchYear" placeholder="Date Watched"/>
+        <input type="datetime" id="WatchYear" name="WatchYear" value="@Model.WatchYear" placeholder="@Model.WatchYear"/>
         <br />
         <p>Your Rating (1-100)</p>
-        <input type="number" id="WatchYear" name="UserRating" min="1" max="100" />
+        <input type="number" id="WatchYear" name="UserRating" min="1" max="100" value="@Model.UserRating"/>
         <br />
         <p>Short review, 300 character max, you can also leave keywords</p>
-        <textarea rows="5" cols="50" id="UserReview" name="UserReview" maxlength="300" placeholder="@Model.UserReview"></textarea>
+        <textarea rows="5" cols="50" id="UserReview" name="UserReview" maxlength="300">@Model.UserReview</textarea>
         <input type="submit" value="Save Changes" />
 
     </form>

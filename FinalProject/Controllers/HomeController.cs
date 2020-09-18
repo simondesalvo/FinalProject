@@ -59,11 +59,8 @@ namespace FinalProject.Controllers
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
-            List<UserMovie> userList = new List<UserMovie>();
-            foreach (UserMovie m in savedMovies)
-            {
-                userList.Add(m);
-            }
+            List<UserMovie> userList = savedMovies.OrderBy(m => m.Title).ToList();
+            
             return View(userList);
         }
 
