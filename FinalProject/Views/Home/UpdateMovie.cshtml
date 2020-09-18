@@ -17,14 +17,17 @@
             <input type="checkbox" id ="Watched" name="Watched" value="false" hidden />
         }
         <br />
+        <p>Where did you watch it?</p>
         <input type="text" id ="WatchLocation" name="WatchLocation" value="@Model.WatchLocation" placeholder="Where did you watch it?" />
         <br />
+        <p>When did you watch it?</p>
         <input type="date" id="WatchYear" name="WatchYear" value="@Model.WatchYear" placeholder="Date Watched"/>
         <br />
-        <p>Rating (1-100)</p>
+        <p>Your Rating (1-100)</p>
         <input type="number" id="WatchYear" name="UserRating" min="1" max="100" />
         <br />
-        <input type="text" id="UserReview" name="UserReview" maxlength="300" placeholder="Leave a short review, or keywords you want to tag the movie with. 300 character limit" />
+        <p>Short review, 300 character max, you can also leave keywords</p>
+        <textarea rows="5" cols="50" id="UserReview" name="UserReview" maxlength="300" placeholder="@Model.UserReview"></textarea>
         <input type="submit" value="Save Changes" />
 
     </form>

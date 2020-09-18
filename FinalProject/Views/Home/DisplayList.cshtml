@@ -3,27 +3,64 @@
 }
 @model List<UserMovie>
 
-
-@if (ViewBag.MovieExitsInWatchedList != null)
-{
-    <p>@ViewBag.MovieExitsInWatchedList</p>
-}
-
-<table class="table table-bordered">
-    @foreach (UserMovie m in Model)
+<div>
+    @{ var result = TempData["MovieExistsCheck"];}
+    @if (result != null)
     {
-        <tr>
-            <td><a href="../Home/MovieSelection?id=@m.MovieId">@m.Title</a></td>
-            <td>@m.Watched</td>
-            <td>@m.WatchLocation</td>
-            <td>@m.WatchYear</td>
-            <td>@m.UserRating</td>
-            <td>@m.UserReview</td>
-            <td><a href="../Home/UpdateMovie?id=@m.Id">Update Movie</a></td>
-            <td class="btn-outline-danger" onclick="return confirm('Are you sure, you want to delete this movie?')"><a href="../Home/DeleteMovie?id=@m.Id">Delete Movie</a></td>
-        </tr>
+        <p>@TempData["MovieExistsCheck"]</p>
+        <br />
     }
 
+    <table class="table table-bordered">
+        <tr>
+            <td>Title</td>
+            <td>Watched?</td>
+            <td>Watch Location</td>
+            <td>Year Watched</td>
+            <td>Your Rating</td>
+            <td>Your Review</td>
+        </tr>
+        @foreach (UserMovie m in Model)
+        {
+    <tr>
+        <td><a href="../Home/MovieSelection?id=@m.MovieId">@m.Title</a></td>
+        @if (m.Watched == true)
+        {
+            <td>Watched</td>
+            <td>@m.WatchLocation</td>
+            @if (m.WatchYear != null)
+            {
+                <td>@m.WatchYear.ToString().Remove(8)</td>
+            }
+            else
+            {
+                <td></td>
+            }
 
-</table>
-<button type="button" class="btn btn-info" a href="../Home/Search">Movie Search</button>
+        }
+        else
+        {
+            <td>Not watched</td>
+            <td>n/a</td>
+            <td>n/a</td>
+        }
+
+        @if (m.UserRating > 0)
+        {
+            <td>@m.UserRating</td>
+        }
+        else
+        {
+            <td></td>
+        }
+
+        <td>@m.UserReview</td>
+        <td><a href="../Home/UpdateMovie?id=@m.Id">Update Movie</a></td>
+        <td class="btn-outline-danger" onclick="return confirm('Are you sure, you want to delete this movie?')"><a href="../Home/DeleteMovie?id=@m.Id">Delete Movie</a></td>
+    </tr>
+        }
+
+
+    </table>
+    <button type="button" class="btn btn-info" a href="../Home/Search">Movie Search</button>
+</div>
