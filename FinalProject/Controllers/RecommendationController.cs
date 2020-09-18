@@ -116,8 +116,7 @@ namespace FinalProject.Controllers
 
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            List<string> movieIdListOfDecade = _context.MovieYear.Where(umw => Convert.ToInt32(umw.Year) >= startYear && Convert.ToInt32(umw.Year) <= endYear).ToList().Select(m => m.Imdbid).Distinct().ToList();
-
+            List<string> movieIdListOfDecade = _context.MovieYear.Where(umw => Convert.ToInt32(umw.Year) >= startYear && Convert.ToInt32(umw.Year) <= endYear && umw.Imdbid != movieId).ToList().Select(m=>m.Imdbid).Distinct().ToList();
             //Get all the movies of that decade 
             List<UserMovie> moviesOfDecade = new List<UserMovie>();
             foreach (string movId in movieIdListOfDecade)
@@ -129,10 +128,29 @@ namespace FinalProject.Controllers
                 }
             }
 
-            // Get all movies that the login user has watched except the current movie
-            //List<UserMovie> watchedMovies = _context.UserMovie.Where(um => um.UserId == id && um.Watched ==true && um.MovieId != movieId).ToList();
-            List<UserMovie> watchedMovies = _context.UserMovie.Where(um => (um.UserId == id && um.Watched == true) || um.MovieId == movieId).ToList();
+            // Get all movies that the login user has watched             
+            List<string> watchedMovieIds = _context.UserMovie.Where(um => um.UserId == id && um.Watched == true).Select(i=>i.MovieId).ToList();
+            // Among these make a list of movies that fall in the search decade
+            List<string> watchedMovieIdsOfDecade = new List<string>();
+            foreach(string movieid in watchedMovieIds)
+            {
+                if(movieIdListOfDecade.Contains(movieid))
+                {
+                    watchedMovieIdsOfDecade.Add(movieid);
+                }
+            }
 
+            //Get the movie details of the watched movies
+            List<UserMovie> watchedMovies = new List<UserMovie>();
+            foreach (string mId in watchedMovieIdsOfDecade)
+            {
+                UserMovie findWatchedMovie = _context.UserMovie.Where(um => um.MovieId == mId).FirstOrDefault();
+                if (findWatchedMovie != null)
+                {
+                    watchedMovies.Add(findWatchedMovie);
+                }
+            }
+            
             //exclude the movies the user has already watched
             List<UserMovie> recommendedMovies = moviesOfDecade.Except(watchedMovies).ToList();
             return View(recommendedMovies);
@@ -172,6 +190,36 @@ namespace FinalProject.Controllers
             return View(directorMovieByHighest);
         }
 
+        public IActionResult GetOtherUsersWatchedMovie(string movieId)
+        {
+            // Get the login user
+            string loginUserid = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // Get the user ids who have watched this other than the login user;
+            List<UserMovie> othersList = _context.UserMovie.Where(um => um.MovieId == movieId && um.UserId != loginUserid).ToList();
+
+            // create a VM of user name and the usermovie related to the user
+            List<UserNameUserMovieVM> unameUMovieList = new List<UserNameUserMovieVM>();
+            // for each user id in the list 
+            foreach (UserMovie um in othersList)
+            {
+                // get the user name from AspNetUsers table
+                string userNameFromDB = _context.AspNetUsers.Where(au => au.Id == um.UserId).ToList().Select(aum => aum.UserName).FirstOrDefault();
+                
+                //extract the first part of the email since the username is stored as the email
+                int indexOfAtChar = userNameFromDB.IndexOf('@');
+                string userName = userNameFromDB.Substring(0, indexOfAtChar);
+                
+                //create a new VM object for each user and add the info
+                UserNameUserMovieVM uNameuMovie = new UserNameUserMovieVM();
+                uNameuMovie.UserName = userName;
+                uNameuMovie.userMovie = um;
+
+                // Add this to the list 
+                unameUMovieList.Add(uNameuMovie);
+            }               
+
+            return View(unameUMovieList);
+        }
         //public async Task<IActionResult> SearchResultByIMDBId(List<string> imdbIdList)
         //{
         //    List<MovieSearch> movies = new List<MovieSearch>();

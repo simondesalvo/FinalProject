@@ -10,7 +10,7 @@ else
 {
     @foreach (UserMovie m in Model.Keys)
     {
-        <p>@m.Title</p>
+        <a href="../Home/MovieSelection?id=@m.MovieId">@m.Title</a>
         <p>User Score: @Model[m]</p>
 
 
