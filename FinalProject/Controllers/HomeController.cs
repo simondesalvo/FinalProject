@@ -179,7 +179,7 @@ namespace FinalProject.Controllers
 
                 if (userMovieExisting == null)
                 {
-                    ViewBag.MovieExitsInWatchedList = false;
+                    //ViewBag.MovieExitsInWatchedList = false;
                     _context.UserMovie.Add(userMovie);
                     _context.SaveChanges();
                     AddtoGenre(selectedMovie);
@@ -189,7 +189,7 @@ namespace FinalProject.Controllers
                 }
                 else
                 {
-                    ViewBag.MovieExitsInWatchedList = true;
+                    ViewBag.MovieExitsInWatchedList = "Movie already exists in your list!";
                 }                
             }
             return RedirectToAction("DisplayList");
