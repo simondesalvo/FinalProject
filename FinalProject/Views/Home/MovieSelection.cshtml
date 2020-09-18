@@ -13,10 +13,13 @@
 <br />
 <p><a href="../Recommendation/GetMoviesByDirector?name=@Model.Director">@Model.Director</a></p>
 <br />
-<p>@Model.Actors</p>
-<p>@Model.Year</p><br/>
-<a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a><br/>
+<p><a href="../Recommendation/GetMoviesByActor?name=@Model.Actors">@Model.Actors</a></p>
+<p>@Model.Year</p>
+<br />
+<a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a>
+<br />
 <a href="../Recommendation/GetMoviesOfDecade?year=@Model.Year">Get other movies of this decade</a>
+<a href="../Recommendation/GetOtherUsersWatchedMovie?movieId=@Model.imdbID">See who else has watch it and what they have to say!!!</a>
 
 
 
