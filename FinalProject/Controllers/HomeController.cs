@@ -153,7 +153,7 @@ namespace FinalProject.Controllers
 
 
 
-
+        [Authorize]
         //add movie to list
         public async Task<IActionResult> AddtoWatchedList(string id)
         {
