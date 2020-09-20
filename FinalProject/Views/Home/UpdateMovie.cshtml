@@ -25,7 +25,15 @@
     <br />
     <br />
     <p>When did you watch it?</p>
-    <input type="datetime" id="WatchYear" name="WatchYear" value="@Model.WatchYear" placeholder="@Model.WatchYear" />
+    @if (Model.WatchYear == null)
+    {
+        <input type="datetime-local" id="WatchYear" name="WatchYear" value="@Model.WatchYear" />
+    }
+    else
+    {
+        <input type="datetime" id="WatchYear" name="WatchYear" value="@Model.WatchYear" placeholder="@Model.WatchYear" />
+    }
+
     <br />
     <br />
     <p>Your Rating (1-100)</p>

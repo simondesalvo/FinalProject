@@ -11,27 +11,40 @@
 else
 {
     <h4>Here are other users who have watched @Model[0].userMovie.Title</h4>
-    @foreach (UserNameUserMovieVM item in Model)
-    {
-        <p>@item.UserName</p>
-        if (@item.userMovie.UserRating > 0)
-        {
-            <p>@item.userMovie.UserRating</p>
-        }
-        else
-        {
-            <p>Movie not rated</p>
-        }
-        @if (!string.IsNullOrEmpty(item.userMovie.UserReview))
-        {
-            <p>@item.userMovie.UserReview</p>
-        }
-        else
-        {
-            <p>User Review Not Available</p>
-        }
+    <table class="table table-bordered">
+        <tr>
+            <th>Username</th>
+            <th>Movie Title</th>
+            <th>User Rating</th>
+            <th>User Review</th>
+        </tr>
+        <tr>
+            @foreach (UserNameUserMovieVM item in Model)
+            {
 
-    }
+                <td>@item.UserName</td>
+                <td>@item.userMovie.Title</td>
+                @if (@item.userMovie.UserRating > 0)
+                {
+                    <td>@item.userMovie.UserRating</td>
+                }
+                else
+                {
+                    <td>Movie not rated</td>
+                }
+                @if (item.userMovie.UserReview != null)
+                {
+                    <td>@item.userMovie.UserReview</td>
+                }
+                else
+                {
+                    <td>Not yet reviewed</td>
+                }
+             }
+        </tr>
+    </table>
 }
+        
+        
 
 
