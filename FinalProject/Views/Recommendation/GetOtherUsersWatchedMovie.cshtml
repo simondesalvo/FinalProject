@@ -14,7 +14,6 @@ else
     <table class="table table-bordered">
         <tr>
             <th>Username</th>
-            <th>Movie Title</th>
             <th>User Rating</th>
             <th>User Review</th>
         </tr>
@@ -23,7 +22,6 @@ else
             {
 
                 <td>@item.UserName</td>
-                <td>@item.userMovie.Title</td>
                 @if (@item.userMovie.UserRating > 0)
                 {
                     <td>@item.userMovie.UserRating</td>
