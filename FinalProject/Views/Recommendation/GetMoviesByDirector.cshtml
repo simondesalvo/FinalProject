@@ -1,15 +1,19 @@
-﻿@model Dictionary<UserMovie, double>
+﻿
+@model List<DictionaryVM>
 
-@if (Model.Count == 0)
+
+@foreach (DictionaryVM vm in Model)
 {
+    <h4>@vm.Actor</h4>
+    if (vm.MoviesWithScore.Count == 0)
+    {
+        <p>Looks like we don't have any movies with this director in our database! </p>
+    }
+    foreach (UserMovie m in vm.MoviesWithScore.Keys)
+    {
 
-      <p>Directors: @ViewBag.directors</p>
-    <p>Looks like we don't have any movies with this director in our database, try another! </p>
-}
-@foreach (UserMovie m in Model.Keys)
-{
-   <p>Directors: @ViewBag.directors</p>
 
-    <a href="../Home/MovieSelection?id=@m.MovieId">@m.Title</a>
-    <p>Average User Score: @Model[m]</p>
+        <a href="../Home/MovieSelection?id=@m.MovieId">@m.Title</a>
+        <p>Average User Score= @vm.MoviesWithScore[m]</p>
+    }
 }
