@@ -153,7 +153,7 @@ namespace FinalProject.Controllers
 
 
 
-
+        [Authorize]
         //add movie to list
         public async Task<IActionResult> AddtoWatchedList(string id)
         {
@@ -346,17 +346,27 @@ namespace FinalProject.Controllers
         //update movie in list
         public IActionResult UpdateWatchedList(UserMovie userMovie)
         {
-            UserMovie userMovieToUpdate = _context.UserMovie.Find(userMovie.Id);
-            userMovieToUpdate.Watched = userMovie.Watched;
-            userMovieToUpdate.WatchLocation = userMovie.WatchLocation;
-            userMovieToUpdate.WatchYear = userMovie.WatchYear;
-            userMovieToUpdate.UserRating = userMovie.UserRating;
-            userMovieToUpdate.UserReview = userMovie.UserReview;
-            // TO BE IMPLEMENTED LATER
-            //userMovieToUpdate.WatchedTogetherId = ;
-            _context.Entry(userMovieToUpdate).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.UserMovie.Update(userMovieToUpdate);
-            _context.SaveChanges();
+            try
+            {
+                UserMovie userMovieToUpdate = _context.UserMovie.Find(userMovie.Id);
+                userMovieToUpdate.Watched = userMovie.Watched;
+                userMovieToUpdate.WatchLocation = userMovie.WatchLocation;
+                userMovieToUpdate.WatchYear = userMovie.WatchYear;
+                userMovieToUpdate.UserRating = userMovie.UserRating;
+                userMovieToUpdate.UserReview = userMovie.UserReview;
+                // TO BE IMPLEMENTED LATER
+                //userMovieToUpdate.WatchedTogetherId = ;
+                if(ModelState.IsValid)
+                {
+                    _context.Entry(userMovieToUpdate).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _context.UserMovie.Update(userMovieToUpdate);
+                    _context.SaveChanges();
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
 
             return RedirectToAction("DisplayList");
         }

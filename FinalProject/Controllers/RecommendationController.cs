@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FinalProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -27,6 +28,7 @@ namespace FinalProject.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Recommended()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -107,6 +109,7 @@ namespace FinalProject.Controllers
             return distinctGenres;
         }
 
+        [Authorize]
         public IActionResult GetMoviesOfDecade(string year, string movieId)
         {
             string strDecadeFind = year.Substring(0, 3);
@@ -155,7 +158,7 @@ namespace FinalProject.Controllers
             List<UserMovie> recommendedMovies = moviesOfDecade.Except(watchedMovies).ToList();
             return View(recommendedMovies);
         }
-
+        [Authorize]
         public IActionResult GetMoviesByDirector(string name)
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -189,7 +192,7 @@ namespace FinalProject.Controllers
             ViewBag.directors = name;
             return View(directorMovieByHighest);
         }
-
+        [Authorize]
         public IActionResult GetOtherUsersWatchedMovie(string movieId)
         {
             // Get the login user
@@ -252,6 +255,7 @@ namespace FinalProject.Controllers
 
         }
 
+        [Authorize]
         public IActionResult GetMoviesByActor(string name)
         {
 
