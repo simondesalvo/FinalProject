@@ -3,31 +3,45 @@
 }
 @model UserMovie
 
-    <form action="../Home/UpdateWatchedList" method="post">
-        <input type="text" name="Id" value="@Model.Id" hidden />
-        <p>Have you watched this movie?</p>
-        @if (Model.Watched == true)
-        {
-            <input type="checkbox" id ="Watched" name="Watched" value="true" checked />
-            <input type="checkbox" id ="Watched" name="Watched" value="false" hidden />
-        }
-        else
-        {
-            <input type="checkbox" id ="Watched" name="Watched" value="true" />
-            <input type="checkbox" id ="Watched" name="Watched" value="false" hidden />
-        }
-        <br />
-        <p>Where did you watch it?</p>
-        <input type="text" id ="WatchLocation" name="WatchLocation" value="@Model.WatchLocation" placeholder="Where did you watch it?" />
-        <br />
-        <p>When did you watch it?</p>
-        <input type="datetime" id="WatchYear" name="WatchYear" value="@Model.WatchYear" placeholder="@Model.WatchYear"/>
-        <br />
-        <p>Your Rating (1-100)</p>
-        <input type="number" id="WatchYear" name="UserRating" min="1" max="100" value="@Model.UserRating"/>
-        <br />
-        <p>Short review, 300 character max, you can also leave keywords</p>
-        <textarea rows="5" cols="50" id="UserReview" name="UserReview" maxlength="300">@Model.UserReview</textarea>
-        <input type="submit" value="Save Changes" />
+<h4>@Model.Title</h4>
+<br />
+<form action="../Home/UpdateWatchedList" method="post">
+    <input type="text" name="Id" value="@Model.Id" hidden />
+    <p>Have you watched this movie? (check the box for "yes")</p>
+    @if (Model.Watched == true)
+    {
+        <input type="checkbox" id="Watched" name="Watched" value="true" checked />
+        <input type="checkbox" id="Watched" name="Watched" value="false" hidden />
+    }
+    else
+    {
+        <input type="checkbox" id="Watched" name="Watched" value="true" />
+        <input type="checkbox" id="Watched" name="Watched" value="false" hidden />
+    }
+    <br />
+    <br />
+    <p>Where did you watch it?</p>
+    <input type="text" id="WatchLocation" name="WatchLocation" value="@Model.WatchLocation" placeholder="Where did you watch it?" />
+    <br />
+    <br />
+    <p>When did you watch it?</p>
+    @if (Model.WatchYear == null)
+    {
+        <input type="datetime-local" id="WatchYear" name="WatchYear" value="@Model.WatchYear" />
+    }
+    else
+    {
+        <input type="datetime" id="WatchYear" name="WatchYear" value="@Model.WatchYear" placeholder="@Model.WatchYear" />
+    }
 
-    </form>
+    <br />
+    <br />
+    <p>Your Rating (1-100)</p>
+    <input type="number" id="WatchYear" name="UserRating" min="1" max="100" value="@Model.UserRating" />
+    <br />
+    <br />
+    <p>Short review, 300 character max, you can also leave keywords</p>
+    <textarea rows="5" cols="50" id="UserReview" name="UserReview" maxlength="300">@Model.UserReview</textarea>
+    <input type="submit" value="Save Changes" />
+
+</form>

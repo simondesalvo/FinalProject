@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using FinalProject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -26,7 +27,7 @@ namespace FinalProject.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult Recommended()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -106,16 +107,20 @@ namespace FinalProject.Controllers
 
             return distinctGenres;
         }
-
+        [Authorize]
         public IActionResult GetMoviesOfDecade(string year, string movieId)
         {
+            //finds first year if it's a listed range, first three characters
             string strDecadeFind = year.Substring(0, 3);
+            //adds zero to first three chracters, making it the start of a decade
             strDecadeFind = strDecadeFind + "0";
             int startYear = int.Parse(strDecadeFind);
+            //makes first three chracters and a 9, to the end of the decade
             int endYear = startYear + 9;
 
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            //everything in our database apart from the title the user was just looking at
             List<string> movieIdListOfDecade = _context.MovieYear.Where(umw => Convert.ToInt32(umw.Year) >= startYear && Convert.ToInt32(umw.Year) <= endYear && umw.Imdbid != movieId).ToList().Select(m=>m.Imdbid).Distinct().ToList();
             //Get all the movies of that decade 
             List<UserMovie> moviesOfDecade = new List<UserMovie>();
@@ -155,7 +160,7 @@ namespace FinalProject.Controllers
             List<UserMovie> recommendedMovies = moviesOfDecade.Except(watchedMovies).ToList();
             return View(recommendedMovies);
         }
-
+        [Authorize]
         public IActionResult GetMoviesByDirector(string name)
         {
             List<DictionaryVM> vmList = new List<DictionaryVM>();
@@ -190,7 +195,7 @@ namespace FinalProject.Controllers
             
             return View(vmList);
         }
-
+        [Authorize]
         public IActionResult GetOtherUsersWatchedMovie(string movieId)
         {
             // Get the login user
@@ -252,7 +257,7 @@ namespace FinalProject.Controllers
             return roundedAverage;
 
         }
-
+        [Authorize]
         public IActionResult GetMoviesByActor(string name)
         {
 
