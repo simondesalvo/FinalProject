@@ -112,13 +112,17 @@ namespace FinalProject.Controllers
         [Authorize]
         public IActionResult GetMoviesOfDecade(string year, string movieId)
         {
+            //finds first year if it's a listed range, first three characters
             string strDecadeFind = year.Substring(0, 3);
+            //adds zero to first three chracters, making it the start of a decade
             strDecadeFind = strDecadeFind + "0";
             int startYear = int.Parse(strDecadeFind);
+            //makes first three chracters and a 9, to the end of the decade
             int endYear = startYear + 9;
 
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+            //everything in our database apart from the title the user was just looking at
             List<string> movieIdListOfDecade = _context.MovieYear.Where(umw => Convert.ToInt32(umw.Year) >= startYear && Convert.ToInt32(umw.Year) <= endYear && umw.Imdbid != movieId).ToList().Select(m=>m.Imdbid).Distinct().ToList();
             //Get all the movies of that decade 
             List<UserMovie> moviesOfDecade = new List<UserMovie>();
@@ -161,36 +165,37 @@ namespace FinalProject.Controllers
         [Authorize]
         public IActionResult GetMoviesByDirector(string name)
         {
+            List<DictionaryVM> vmList = new List<DictionaryVM>();
+            string[] directors = name.Split(',');
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            List<MovieDirector> directorWorks = _context.MovieDirector.Where(m => name.Contains(m.Director)).ToList();
             List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
-            List<UserMovie> directorMovies = new List<UserMovie>();
-            for (int i = 0; i < directorWorks.Count; i++)
+            foreach (string director in directors)
             {
-                List<UserMovie> addMovies = _context.UserMovie.Where(m => m.MovieId == directorWorks[i].Imdbid).ToList();
-                directorMovies.Add(addMovies[0]);
-            }
-            List<UserMovie> recommendedMovies = directorMovies.Except(watchedMovies).ToList();
-            recommendedMovies.Select(x => x.MovieId).Distinct();
-            Dictionary<UserMovie, double> moviesWithAvgRating = new Dictionary<UserMovie, double>();
-            for (int dm = 0; dm < recommendedMovies.Count(); dm++)
-            {
+                List<MovieDirector> directorWorks = _context.MovieDirector.Where(m => director.Contains(m.Director)).ToList();
+                List<UserMovie> directorMovies = new List<UserMovie>();
+                for (int i = 0; i < directorWorks.Count; i++)
+                {
+                    List<UserMovie> addMovies = _context.UserMovie.Where(m => m.MovieId == directorWorks[i].Imdbid).ToList();
+                    directorMovies.Add(addMovies[0]);
+                }
+                List<UserMovie> recommendedMovies = directorMovies.Except(watchedMovies).ToList();
+                recommendedMovies.Select(x => x.MovieId).Distinct();
+                Dictionary<UserMovie, double> moviesWithAvgRating = new Dictionary<UserMovie, double>();
+                for (int dm = 0; dm < recommendedMovies.Count(); dm++)
+                {
 
-                double averageRating = GetAverageRating(recommendedMovies[dm]);
-                moviesWithAvgRating.Add(recommendedMovies[dm], averageRating);
+                    double averageRating = GetAverageRating(recommendedMovies[dm]);
+                    moviesWithAvgRating.Add(recommendedMovies[dm], averageRating);
+                }
+                List<MovieDirector> directorlist = directorWorks.Distinct().ToList();
+                Dictionary<UserMovie, double> directorMovieByHighest = moviesWithAvgRating.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+                DictionaryVM dictionaries = new DictionaryVM();
+                dictionaries.Actor = director;
+                dictionaries.MoviesWithScore = directorMovieByHighest;
+                vmList.Add(dictionaries);
             }
-            List<MovieDirector> directors = new List<MovieDirector>();
-            Dictionary<UserMovie, double> directorMovieByHighest = moviesWithAvgRating.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-            //foreach(UserMovie m in directorMovieByHighest.Keys)
-            //{
-            //    List<MovieDirector> placeholder = _context.MovieDirector.Where(w => w.Imdbid == m.MovieId).ToList();
-            //    foreach (MovieDirector d in placeholder)
-            //    {
-            //        directors.Add(d);
-            //    }
-            //}
-            ViewBag.directors = name;
-            return View(directorMovieByHighest);
+            
+            return View(vmList);
         }
         [Authorize]
         public IActionResult GetOtherUsersWatchedMovie(string movieId)
@@ -265,9 +270,9 @@ namespace FinalProject.Controllers
             List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
             foreach (string actor in actors)
             {
-                List<MovieActor> actorWorks = _context.MovieActor.Where(m => actor.Contains(m.Actor)).ToList();
+                List<MovieActor> actorWorks = _context.MovieActor.Where(m => actor.Contains(m.Actor)).ToList(); //makes sure the instances of actors match the actor we are checking for
                 List<UserMovie> actorMovies = new List<UserMovie>();
-                for (int i = 0; i < actorWorks.Count; i++)
+                for (int i = 0; i < actorWorks.Count; i++)  //goes through all the instances of an actor and adds those movies to a list
                 {
                     List<UserMovie> addMovies = _context.UserMovie.Where(m => m.MovieId == actorWorks[i].Imdbid).ToList();
                     actorMovies.Add(addMovies[0]);
@@ -275,12 +280,12 @@ namespace FinalProject.Controllers
                 List<UserMovie> recommendedMovies = actorMovies.Except(watchedMovies).ToList();
                 recommendedMovies.Select(x => x.MovieId).Distinct();
                 Dictionary<UserMovie, double> moviesWithAvgRating = new Dictionary<UserMovie, double>();
-                for (int am = 0; am < recommendedMovies.Count(); am++)
-                {
+                for (int am = 0; am < recommendedMovies.Count(); am++) //goes through every movie in recommendedMovies and finds the average user rating
+                {                                                      // and adds that movie and score to a dictionary
                     double averageRating = GetAverageRating(recommendedMovies[am]);
                     moviesWithAvgRating.Add(recommendedMovies[am], averageRating);
                 }
-                List<MovieActor> distinctActors = actorWorks.Distinct().ToList();
+               // List<MovieActor> distinctActors = actorWorks.Distinct().ToList();
                 Dictionary<UserMovie, double> actorMoviesByHighest = moviesWithAvgRating.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
                 DictionaryVM dictionaries = new DictionaryVM();

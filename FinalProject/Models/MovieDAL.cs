@@ -23,6 +23,8 @@ namespace FinalProject.Models
             _apikey = apiKey;            
         }
 
+
+        //first API, APIMovie or MovieSearch objs
         public HttpClient GetClient()
         {
             HttpClient client = new HttpClient();
@@ -31,6 +33,8 @@ namespace FinalProject.Models
             return client;
         }
 
+
+        //second API, PopcornMovie obj
         public HttpClient GetSecondClient()
         {
             HttpClient client = new HttpClient();
@@ -39,6 +43,7 @@ namespace FinalProject.Models
             return client;
         }
 
+        //calls first API to get list of movies for search results
         public async Task<List<MovieSearch>> GetMovies(string title)
         {
             var client = GetClient();
@@ -59,7 +64,8 @@ namespace FinalProject.Models
 
             return moviesList;
         }
-                
+        
+        //method for first API, not used yet
         public async Task<APIMovie> GetMovieInfo(string imdb)
         {
             var client = GetClient();
