@@ -36,35 +36,56 @@ namespace FinalProject.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
+            //maybe a dictionary with movie title and a list of ints
+            Dictionary<string, int[]> userPop = new Dictionary<string, int[]>();
+
             string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == userId).ToList();
-            
-            List<PopcornMovie> popList = new List<PopcornMovie>();
 
-            UserPopcorn userPop = new UserPopcorn();
-
-            List<UserPopcorn> upList = new List<UserPopcorn>();
-            
-            foreach (UserMovie u in savedMovies)
+            for (int i = 0; i< savedMovies.Count; i++)
             {
                 PopcornMovie pop = new PopcornMovie();
-                pop = await MovieSelection($"{u.MovieId}");
-                //breaks on second call
-                int intScore;
-                bool isValid = int.TryParse(pop.Metascore.ToString(), out intScore);
+                pop = await MovieSelection($"{savedMovies[i].MovieId}");
+                int metaScore;
+                bool isValid = int.TryParse(pop.Metascore, out metaScore);
                 if (isValid == true)
                 {
-                    popList.Add(pop);
+                    int[] scores = new int[] { savedMovies[i].UserRating, metaScore };
+                    userPop.Add(savedMovies[i].Title, scores);
                 }
-                else
-                {
-                    savedMovies.Remove(u);
-                }
-                
             }
 
-            userPop.UserMovies = savedMovies;
-            userPop.PopcornMovies = popList;
+            //string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            //List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == userId).ToList();
+
+            //List<PopcornMovie> popList = new List<PopcornMovie>();
+
+            //UserPopcorn userPop = new UserPopcorn();
+
+            //List<UserPopcorn> upList = new List<UserPopcorn>();
+
+            //foreach (UserMovie u in savedMovies)
+            //{
+            //    PopcornMovie pop = new PopcornMovie();
+            //    pop = await MovieSelection($"{u.MovieId}");
+            //    //breaks on second call
+            //    int intScore;
+            //    bool isValid = int.TryParse(pop.Metascore.ToString(), out intScore);
+            //    if (isValid == true)
+            //    {
+            //        popList.Add(pop);
+            //    }
+            //    else
+            //    {
+            //        savedMovies.Remove(u);
+            //    }
+
+            //}
+
+            //userPop.UserMovies = savedMovies;
+            //userPop.PopcornMovies = popList;
+
+
 
 
             //foreach loop getting list of popcorn movie
