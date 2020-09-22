@@ -17,32 +17,35 @@ else
             <th>User Rating</th>
             <th>User Review</th>
         </tr>
-        <tr>
-            @foreach (UserNameUserMovieVM item in Model)
-            {
 
-                <td>@item.UserName</td>
-                @if (@item.userMovie.UserRating > 0)
-                {
-                    <td>@item.userMovie.UserRating</td>
-                }
-                else
-                {
-                    <td>Movie not rated</td>
-                }
-                @if (item.userMovie.UserReview != null)
-                {
-                    <td>@item.userMovie.UserReview</td>
-                }
-                else
-                {
-                    <td>Not yet reviewed</td>
-                }
-             }
-        </tr>
-    </table>
+        @foreach (UserNameUserMovieVM item in Model)
+        {
+    <tr>
+        <td>@item.UserName</td>
+        @if (@item.userMovie.UserRating > 0)
+        {
+            <td>@item.userMovie.UserRating</td>
+        }
+        else
+        {
+            <td>Movie not rated</td>
+        }
+        @if (item.userMovie.UserReview != null)
+        {
+            <td>@item.userMovie.UserReview</td>
+        }
+        else
+        {
+            <td>Not yet reviewed</td>
+
+
+        }
+    </tr>
+        }
+            </table>
 }
-        
-        
+
+
+
 
 

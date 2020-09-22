@@ -85,11 +85,9 @@
                                     <p>Rating: <span id="rating"></span></p>
                                     <input type="range" min="1" max="100" value=@m.UserRating class="slider" id="userRating" name="userRating">
                                 </div>
-                                @*<a href="../Home/UpdateUserRating?id=" onclick="return confirm('Are you sure, you want to update your rating?')"> Update</a>*@
+                                
                                 <input type="submit" class="btn-link" onclick="return confirm('Are you sure, you want to update your rating?')" value="Change" />
-                                @*<button type="submit" class="btn btn-primary">
-                                        <i class="icon-user icon-white"></i> Change
-                                    </button>*@
+                                
                             </form>
                         </td>
                     }
@@ -98,12 +96,12 @@
                         <td> </td>
                     }
                     <td>@m.UserReview </td>
-                    <td class="alert-info"> <a href="../Home/UpdateMovie?id=@m.Id"> Update Movie</a> </td>
-                    <td class="alert-danger" onclick="return confirm('Are you sure, you want to delete this movie?')"> <a href="../Home/DeleteMovie?id=@m.Id"> Delete Movie</a> </td>
+                    <td class="btn btn-light btn-outline-info"> <a href="../Home/UpdateMovie?id=@m.Id">Update</a> </td>
+                    <td class="btn btn-light btn-outline-danger" onclick="return confirm('Are you sure, you want to delete this movie?')"> <a href="../Home/DeleteMovie?id=@m.Id">Delete</a> </td>
                 </tr>
             }
         </table>
-        <a href="../Home/Search" type="button" class="btn btn-info">Movie Search</a>
+        <a href="../Home/Search" type="button" class="btn btn-info">Title Search</a>
     </div>
 </body>
 </html>
@@ -119,10 +117,5 @@
             });
         })(i);
     }
-    //var slider = document.getElementById("userRating");
-    //var output = document.getElementById("rating");
-    //output.innerHTML = slider.value;
-    //slider.oninput = function () {
-    //    output.innerHTML = this.value;
-    //}
+ 
 </script>
