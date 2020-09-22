@@ -11,6 +11,7 @@ else
 {
     <h4>Director and average user scores for the movies they've directed:</h4>
     <table class="table table-bordered">
+
         @foreach (DictionaryVM vm in Model)
         {
             <tr>
@@ -27,7 +28,14 @@ else
             {
                 <tr>
                     <td><a href="../Home/MovieSelection?id=@m.MovieId">@m.Title</a></td>
-                    <td>Average Score: @vm.MoviesWithScore[m]</td>
+                    @if (vm.MoviesWithScore[m] > 0)
+                    {
+                        <td>Average Score: @vm.MoviesWithScore[m]</td>
+                    }
+                    else
+                    {
+                        <td>Nobody has given this movie a score yet!</td>
+                    }
                 </tr>
             }
 

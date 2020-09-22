@@ -1,7 +1,19 @@
-﻿@model Dictionary<UserMovie, double>
-
-@foreach(UserMovie um in Model.Keys)
-{
-    <p>@um.Title</p>
-    <p>@Model[um]</p>
-}
+﻿<h4 class="font-italic">For you. By you. SiJorSu</h4>
+<table class="table table-bordered">
+    <tr>
+        <th>List</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td><a href="../Recommendation/FamilyMovies">Family</a></td>
+        <td>Everybody hurry to the living room a take seat around the tube, these flicks can be enjoyed by the whole family!</td>
+    </tr>
+    <tr>
+        <td><a href="../Recommendation/FunnyMovies">Funny</a></td>
+        <td>Make sure you do some sit-ups before wathcing these movies; they'll have you guffawing so hard you bust a gut</td>
+    </tr>
+    <tr>
+        <td><a href="../Recommendation/SadMovies">Sad</a></td>
+        <td>Bring some tissues, these films are guranteed to "get dust in your eyes"</td>
+    </tr>
+</table>
