@@ -1,0 +1,7 @@
+﻿@model Dictionary<UserMovie, double>
+
+@foreach(UserMovie um in Model.Keys)
+{
+    <p>@um.Title</p>
+    <p>@Model[um]</p>
+}
