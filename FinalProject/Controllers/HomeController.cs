@@ -151,8 +151,6 @@ namespace FinalProject.Controllers
             }
         }
 
-
-
         [Authorize]
         //add movie to list
         public async Task<IActionResult> AddtoWatchedList(string id)
@@ -191,7 +189,6 @@ namespace FinalProject.Controllers
             }
             return RedirectToAction("DisplayList");
         }
-
 
         //adds genre to genre table (for recommendations)
         public bool AddtoGenre(PopcornMovie popcornMovie)
@@ -378,6 +375,26 @@ namespace FinalProject.Controllers
             distinctGenres = _context.Genre.ToList().Select(p => p.Genre1).Distinct().ToList();
 
             return distinctGenres;
+        }
+
+        public IActionResult UpdateUserRating(int id, int userRating)
+        {
+            try
+            {
+                UserMovie userMovieToUpdate = _context.UserMovie.Find(id);
+                userMovieToUpdate.UserRating = userRating;
+                if (ModelState.IsValid)
+                {
+                    _context.Entry(userMovieToUpdate).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                    _context.UserMovie.Update(userMovieToUpdate);
+                    _context.SaveChanges();
+                }
+            }
+            catch(Exception e)
+            {
+
+            }
+            return RedirectToAction("DisplayList");
         }
         public IActionResult Privacy()
         {
