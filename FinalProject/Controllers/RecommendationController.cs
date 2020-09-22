@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FinalProject.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 
 namespace FinalProject.Controllers
@@ -295,6 +297,80 @@ namespace FinalProject.Controllers
             }
 
             return View(vmList);
+        }
+
+        public IActionResult OurList()
+        {
+
+            List<UserMovie> sadMovies = SadMovies();
+            Dictionary<UserMovie, double> sadWithRating = new Dictionary<UserMovie, double>();
+            foreach(UserMovie um in sadMovies)
+            {
+                double average = GetAverageRating(um);
+                sadWithRating.Add(um, average);
+            }
+            
+            return View(sadWithRating);
+        }
+        
+        public List<UserMovie> SadMovies()
+        {
+            string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            List<UserMovie> watchedMovies = _context.UserMovie.Where(x => x.UserId == id).ToList();
+
+            List<UserMovie> allUM = _context.UserMovie.ToList();
+            List<UserMovie> moviesNotWatched = allUM.Except(watchedMovies).ToList();
+            // moviesNotWatched.Select(x => x.MovieId).Distinct();
+            List<UserMovie> distinctMovies = new List<UserMovie>();
+            distinctMovies.Add(moviesNotWatched[0]);
+            foreach (UserMovie m in moviesNotWatched)
+            {
+                int check = 0;
+                foreach (UserMovie u in distinctMovies)
+                {
+
+                    if (m.MovieId == u.MovieId)
+                    {
+                        check++;
+                    }
+                }
+                if (check == 0) 
+                { 
+                        distinctMovies.Add(m);
+                }
+            }
+            
+            List<UserMovie> sadMovies = new List<UserMovie>();
+            foreach (UserMovie um in distinctMovies)
+            {
+                List<UserMovie> sameMovies = _context.UserMovie.Where(u => u.MovieId == um.MovieId).ToList();
+                List<string>reviews= new List<string>();
+                foreach (UserMovie sm in sameMovies)
+                {
+                    if (sm.UserReview != null)
+                    {
+                    reviews.Add(sm.UserReview);
+                    }
+                }
+                int sadnessCount = 0;
+                foreach(string review in reviews)
+                {
+                    string[] words = review.ToLower().Split(" ");
+                    foreach (string word in words)
+                    {
+                        if (Regex.IsMatch(word, @"\b(sad)\b"))
+                        {
+                            sadnessCount++;
+                        }
+                    }
+                }
+                if (sadnessCount > 1)
+                {
+                    sadMovies.Add(um);
+                }
+            }
+            sadMovies.Select(x=>x.MovieId).Distinct();
+            return (sadMovies);
         }
 
     }
