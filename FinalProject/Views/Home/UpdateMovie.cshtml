@@ -1,14 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Update Movie";
 }
-@model UserMovie
+@*@model UserMovie*@
+@model UserMovieAllUsersVM
 
-<h4>@Model.Title</h4>
+<h4>@Model.userMovie.Title</h4>
 <br />
 <form action="../Home/UpdateWatchedList" method="post">
-    <input type="text" name="Id" value="@Model.Id" hidden />
+    <input type="text" name="Id" value="@Model.userMovie.Id" hidden />
     <p>Have you watched this movie? (check the box for "yes")</p>
-    @if (Model.Watched == true)
+    @if (Model.userMovie.Watched == true)
     {
         <input type="checkbox" id="Watched" name="Watched" value="true" checked />
         <input type="checkbox" id="Watched" name="Watched" value="false" hidden />
@@ -21,27 +22,51 @@
     <br />
     <br />
     <p>Where did you watch it?</p>
-    <input type="text" id="WatchLocation" name="WatchLocation" value="@Model.WatchLocation" placeholder="Where did you watch it?" />
+    <input type="text" id="WatchLocation" name="WatchLocation" value="@Model.userMovie.WatchLocation" placeholder="Where did you watch it?" />
     <br />
     <br />
     <p>When did you watch it?</p>
-    @if (Model.WatchYear == null)
+    @if (Model.userMovie.WatchYear == null)
     {
-        <input type="datetime-local" id="WatchYear" name="WatchYear" value="@Model.WatchYear" />
+        <input type="datetime-local" id="WatchYear" name="WatchYear" value="@Model.userMovie.WatchYear" />
     }
     else
     {
-        <input type="datetime" id="WatchYear" name="WatchYear" value="@Model.WatchYear" placeholder="@Model.WatchYear" />
+        <input type="datetime" id="WatchYear" name="WatchYear" value="@Model.userMovie.WatchYear" placeholder="@Model.userMovie.WatchYear" />
     }
 
     <br />
     <br />
     <p>Your Rating (1-100)</p>
-    <input type="number" id="WatchYear" name="UserRating" min="1" max="100" value="@Model.UserRating" />
+    <input type="number" id="UserRating" name="UserRating" min="1" max="100" value="@Model.userMovie.UserRating" />
     <br />
     <br />
     <p>Short review, 300 character max, you can also leave keywords</p>
-    <textarea rows="5" cols="50" id="UserReview" name="UserReview" maxlength="300">@Model.UserReview</textarea>
+    <textarea rows="5" cols="50" id="UserReview" name="UserReview" maxlength="300">@Model.userMovie.UserReview</textarea>
+    <br /><br />
+    @if(!string.IsNullOrEmpty(@Model.WatchedWithUserNames))
+    { 
+        <p>Previously watched with : @Model.WatchedWithUserNames</p>
+    }
+    <p>Watched this movie with any of our users? Which ones? (hold down control to select multiple users)</p>
+    <select multiple="multiple" name="WatchedTogetherUserNames">
+        @foreach (AspNetUsers user in Model.aspnetUsers)
+        {
+            string name = user.UserName.Substring(0, user.UserName.IndexOf('@'));
+            bool bSelected = false;
+            if (!string.IsNullOrEmpty(Model.WatchedWithUserNames))
+            {
+                if (Model.WatchedWithUserNames.Contains(name))
+                {
+                    bSelected = true;
+                }
+            }
+            @*<option value="@user.Id">@user.UserName.Substring(0, user.UserName.IndexOf('@'))</option>*@
+            <option value="@name">@name</option>
+        }
+    </select>
+
+    <br /><br />
     <input type="submit" value="Save Changes" />
 
 </form>

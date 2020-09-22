@@ -13,7 +13,7 @@ namespace FinalProject.Models
         public DateTime? WatchYear { get; set; }
         public int UserRating { get; set; }
         public string UserReview { get; set; }
-        public int? WatchedTogetherId { get; set; }
+        public string? WatchedTogetherId { get; set; }
         public string Title { get; set; }
 
         public virtual AspNetUsers User { get; set; }

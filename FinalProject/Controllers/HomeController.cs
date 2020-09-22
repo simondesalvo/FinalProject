@@ -337,30 +337,58 @@ namespace FinalProject.Controllers
             }
             else
             {
-                return View(movie);
+                // Get a list of all users in this application
+                List<AspNetUsers> allUsers = _context.AspNetUsers.ToList();
+
+                // Create an object of the VM
+                UserMovieAllUsersVM userMovieAllUsersVM = new UserMovieAllUsersVM();
+                userMovieAllUsersVM.userMovie = movie;
+                userMovieAllUsersVM.aspnetUsers = allUsers;
+                userMovieAllUsersVM.WatchedWithUserNames = movie.WatchedTogetherId;
+                
+
+                //return View(movie);
+                return View(userMovieAllUsersVM);
             }
         }
         //update movie in list
-        public IActionResult UpdateWatchedList(UserMovie userMovie)
+        public IActionResult UpdateWatchedList(UserMovie userMovieInfo, List<string> WatchedTogetherUserNames)
         {
             try
             {
-                UserMovie userMovieToUpdate = _context.UserMovie.Find(userMovie.Id);
-                userMovieToUpdate.Watched = userMovie.Watched;
-                userMovieToUpdate.WatchLocation = userMovie.WatchLocation;
-                userMovieToUpdate.WatchYear = userMovie.WatchYear;
-                userMovieToUpdate.UserRating = userMovie.UserRating;
-                userMovieToUpdate.UserReview = userMovie.UserReview;
-                // TO BE IMPLEMENTED LATER
-                //userMovieToUpdate.WatchedTogetherId = ;
-                if(ModelState.IsValid)
+                UserMovie userMovieToUpdate = _context.UserMovie.Find(userMovieInfo.Id);
+                userMovieToUpdate.Watched = userMovieInfo.Watched;
+                userMovieToUpdate.WatchLocation = userMovieInfo.WatchLocation;
+                userMovieToUpdate.WatchYear = userMovieInfo.WatchYear;
+                userMovieToUpdate.UserRating = userMovieInfo.UserRating;
+                userMovieToUpdate.UserReview = userMovieInfo.UserReview;
+
+                // build all the watched together ids as a string
+                if(WatchedTogetherUserNames.Count > 0)
+                {
+                    string userNames = "";
+                    foreach(string userName in WatchedTogetherUserNames)
+                    {
+                        if(string.IsNullOrEmpty(userNames))
+                        {
+                            userNames = userName;
+                        }
+                        else
+                        {
+                            userNames = userNames + "," + userName;
+                        }
+                    }
+                    userMovieToUpdate.WatchedTogetherId = userNames;
+                }
+                
+                if (ModelState.IsValid)
                 {
                     _context.Entry(userMovieToUpdate).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     _context.UserMovie.Update(userMovieToUpdate);
                     _context.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
             }
