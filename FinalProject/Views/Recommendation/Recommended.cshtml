@@ -15,10 +15,18 @@ else
     </tr>
     @foreach (UserMovie m in Model.Keys)
     {
-        <tr>
-            <td><a href="../Home/MovieSelection?id=@m.MovieId">@m.Title</a></td>
-            <td>@Model[m]</td>
-        </tr>
+<tr>
+    <td><a href="../Home/MovieSelection?id=@m.MovieId">@m.Title</a></td>
+    @if (Model[m] > 0)
+    {
+    
+<td> @Model[m]</td>
+    }
+    else
+    {
+        <td>Doesn't look like anyone has given this a score yet!</td>
+    }
+</tr>
     }
 </table>
 }
