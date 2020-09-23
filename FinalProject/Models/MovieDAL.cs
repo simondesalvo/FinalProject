@@ -65,7 +65,7 @@ namespace FinalProject.Models
             return moviesList;
         }
         
-        //method for first API, not used yet
+        //method for first API, used to get trailer link
         public async Task<APIMovie> GetMovieInfo(string imdb)
         {
             var client = GetClient();
