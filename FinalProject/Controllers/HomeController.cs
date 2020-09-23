@@ -47,7 +47,11 @@ namespace FinalProject.Controllers
         //selection from search result, second API call
         public async Task<IActionResult> MovieSelection(string id)
         {
-            var selection = await _movieDAL.SecondGetMovieInfo($"{id}");
+            PopcornMovie movie1 = await _movieDAL.SecondGetMovieInfo($"{id}");
+            APIMovie movie2 = await _movieDAL.GetMovieInfo($"{id}");
+            APIPopVM selection = new APIPopVM();
+            selection.apiMovie = movie2;
+            selection.popMovie = movie1;
             return View(selection);
 
         }

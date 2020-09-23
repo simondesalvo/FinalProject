@@ -1,35 +1,38 @@
 ﻿@{
     ViewData["Title"] = "Movie Selection";
 }
-@model PopcornMovie
-<h4>@Model.Title</h4>
-<p><b>Type (movie, series, etc):</b> @Model.Type</p>
+@model APIPopVM
+<h4>@Model.popMovie.Title</h4>
+<p><b>Type (movie, series, etc):</b> @Model.popMovie.Type</p>
 <br />
-<img src="@Model.Poster" width="200" height="300" />
+<img src="@Model.popMovie.Poster" width="200" height="300" />
+<a href="@Model.apiMovie.trailer.link" class="btn btn-outline-info" target="_blank">Trailer Link</a>
 <br />
 <b>Plot:</b>
-<p>@Model.Plot</p>
+<p>@Model.popMovie.Plot</p>
 <b>Genre:</b>
-<p>@Model.Genre</p>
+<p>@Model.popMovie.Genre</p>
 <b>Runtime:</b>
 <br />
-<p>@Model.Runtime</p>
+<p>@Model.popMovie.Runtime</p>
 <b>Director(s):</b>
-<p><a href="../Recommendation/GetMoviesByDirector?name=@Model.Director">@Model.Director</a></p>
+<p><a href="../Recommendation/GetMoviesByDirector?name=@Model.popMovie.Director" class="btn btn-outline-info">@Model.popMovie.Director</a></p>
 <b>Actor(s):</b>
-<p><a href="../Recommendation/GetMoviesByActor?name=@Model.Actors">@Model.Actors</a></p>
+<p><a href="../Recommendation/GetMoviesByActor?name=@Model.popMovie.Actors" class="btn btn-outline-info">@Model.popMovie.Actors</a></p>
+<br />
 <b>Release Year:</b>
-<p>@Model.Year</p>
-@if (Model.DVD != null)
+<p>@Model.popMovie.Year</p>
+<a href="../Recommendation/GetMoviesOfDecade?year=@Model.popMovie.Year&movieId=@Model.popMovie.imdbID" class="btn btn-outline-info">Get other movies of this decade</a>
+<br />
+@if (Model.popMovie.DVD != null)
 {
     <b>DVD Release Date:</b>
-    <p>@Model.DVD</p>
+    <p>@Model.popMovie.DVD</p>
 }
 <br />
-<a href="../Home/AddtoWatchedList?id=@Model.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a>
 <br />
 <br />
-<a href="../Recommendation/GetMoviesOfDecade?year=@Model.Year&movieId=@Model.imdbID" class="btn btn-outline-info">Get other movies of this decade</a>
+<a href="../Recommendation/GetOtherUsersWatchedMovie?movieId=@Model.popMovie.imdbID" class="btn btn-outline-info">See what other users have to say</a>
 <br />
 <br />
-<a href="../Recommendation/GetOtherUsersWatchedMovie?movieId=@Model.imdbID" class="btn btn-outline-info">See what other users have to say</a>
+<a href="../Home/AddtoWatchedList?id=@Model.popMovie.imdbID" class="btn btn-lg btn btn-outline-success">Add To List</a>

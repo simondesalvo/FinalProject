@@ -301,12 +301,12 @@ namespace FinalProject.Controllers
 
             return View(vmList);
         }
-
+        [Authorize]
         public IActionResult OurList()
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult SadMovies()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -348,7 +348,7 @@ namespace FinalProject.Controllers
             Dictionary<UserMovie, double> dictonary = GetMovieWithScore(sadMovies);
             return View(dictonary);
         }
-
+        [Authorize]
         public IActionResult FamilyMovies()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -390,7 +390,7 @@ namespace FinalProject.Controllers
             Dictionary<UserMovie, double> dictonary = GetMovieWithScore(famMovies);
             return View(dictonary);
         }
-
+        [Authorize]
         public IActionResult FunnyMovies()
         {
             string id = User.FindFirst(ClaimTypes.NameIdentifier).Value;
