@@ -1,4 +1,5 @@
-﻿@model List<UserMovie>
+﻿@*@model List<UserMovie>*@
+@model Dictionary<UserMovie,double>
 @{
     ViewData["Title"] = "GetMoviesOfDecade";
 }
@@ -10,10 +11,17 @@
 }
 else
 {
-<table class="table table-bordered">
-    @foreach (UserMovie um in Model)
-    {
-    <td><a href="../Home/MovieSelection?id=@um.MovieId">@um.Title</a></td>
-    }
-</table>
+    <table class="table table-bordered">
+        <tr>
+            <th>Title</th>
+            <th>Average User Score</th>
+        </tr>
+        @foreach(UserMovie um in Model.Keys)
+        {
+            <tr>
+                <td><a href="../Home/MovieSelection?id=@um.MovieId">@um.Title</a></td>
+                <td>@Model[um]</td>
+            </tr>        
+        }
+    </table>
 }

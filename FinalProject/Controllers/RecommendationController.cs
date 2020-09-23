@@ -162,7 +162,10 @@ namespace FinalProject.Controllers
 
             //exclude the movies the user has already watched
             List<UserMovie> recommendedMovies = moviesOfDecade.Except(watchedMovies).ToList();
-            return View(recommendedMovies);
+
+            Dictionary<UserMovie,double> viewMovies = GetMovieWithScore(recommendedMovies);
+
+            return View(viewMovies);
         }
         [Authorize]
         public IActionResult GetMoviesByDirector(string name)
