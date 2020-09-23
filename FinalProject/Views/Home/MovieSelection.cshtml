@@ -6,6 +6,7 @@
 <p><b>Type (movie, series, etc):</b> @Model.popMovie.Type</p>
 <br />
 <img src="@Model.popMovie.Poster" width="200" height="300" />
+<a href="@Model.apiMovie.trailer.link" class="btn btn-outline-info" target="_blank">Trailer Link</a>
 <br />
 <b>Plot:</b>
 <p>@Model.popMovie.Plot</p>
@@ -29,8 +30,9 @@
     <p>@Model.popMovie.DVD</p>
 }
 <br />
-<a href="@Model.apiMovie.trailer.link" class="btn btn-outline-info">Trailer Link</a>
-<a href="../Home/AddtoWatchedList?id=@Model.popMovie.imdbID" class="btn btn-primary btn-sm btn btn-outline-success">Add To List</a>
 <br />
 <br />
 <a href="../Recommendation/GetOtherUsersWatchedMovie?movieId=@Model.popMovie.imdbID" class="btn btn-outline-info">See what other users have to say</a>
+<br />
+<br />
+<a href="../Home/AddtoWatchedList?id=@Model.popMovie.imdbID" class="btn btn-lg btn btn-outline-success">Add To List</a>
