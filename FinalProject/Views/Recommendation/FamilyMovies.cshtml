@@ -12,7 +12,7 @@
     @foreach (UserMovie um in Model.Keys)
     {
         <tr>
-            <td>@um.Title</td>
+            <td><a href="../Home/MovieSelection?id=@um.MovieId">@um.Title</a></td>
             <td>@Model[um]</td>
         </tr>
     }

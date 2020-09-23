@@ -3,7 +3,12 @@
 }
 @model List<MovieSearch>
 
-
+@if (Model.Count == 0)
+{
+    <b>Uh oh, no movies matched that search!</b>
+}
+else
+{
     <table class="table table-bordered">
 
         <tr class="d-table-row">
@@ -11,13 +16,14 @@
             <th>Poster</th>
         </tr>
 
-       @foreach (MovieSearch m in Model)
-       {
-    <tr>
-        <td>@m.title</td>
-        <td><img src="@m.image" width="200" height="300"/></td>
-        <td><a href="../Home/MovieSelection?id=@m.id"class="btn btn-primary btn-sm btn btn-outline-success">See Details</a></td>
-    </tr>
-       }
+        @foreach (MovieSearch m in Model)
+        {
+            <tr>
+                <td>@m.title</td>
+                <td><img src="@m.image" width="200" height="300" /></td>
+                <td><a href="../Home/MovieSelection?id=@m.id" class="btn btn-primary btn-sm btn btn-outline-success">See Details</a></td>
+            </tr>
+        }
 
     </table>
+}
