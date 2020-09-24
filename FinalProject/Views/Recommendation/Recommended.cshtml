@@ -1,32 +1,35 @@
 ﻿@model Dictionary<UserMovie, double>
-<h4>You seem to like @ViewBag.Genre movies, here are some others you might like:</h4>
+<html>
+    <body class="viewBkgd">
+        <h4 class="titleColor">You seem to like @ViewBag.Genre movies, here are some others you might like</h4>
 
+        @if (Model.Count == 0)
+        {
+            <p>No Matches Found! Please search again </p>
+        }
+        else
+        {
+            <table class="table table-bordered table-striped tableBorderWidth">
+                <tr>
+                    <th>Title</th>
+                    <th>Average User Score</th>
+                </tr>
+                @foreach (UserMovie m in Model.Keys)
+                {
+                    <tr>
+                        <td><a href="../Home/MovieSelection?id=@m.MovieId" class="aRef"><b>@m.Title</b></a></td>
+                        @if (Model[m] > 0)
+                        {
 
-@if (Model.Count == 0)
-{
-    <p>No Matches Found! Please search again </p>
-}
-else
-{
-<table class="table table-bordered">
-    <tr>
-        <th>Title</th>
-        <th>Average User Score</th>
-    </tr>
-    @foreach (UserMovie m in Model.Keys)
-    {
-<tr>
-    <td><a href="../Home/MovieSelection?id=@m.MovieId">@m.Title</a></td>
-    @if (Model[m] > 0)
-    {
-    
-<td> @Model[m]</td>
-    }
-    else
-    {
-        <td>Doesn't look like anyone has given this a score yet!</td>
-    }
-</tr>
-    }
-</table>
-}
+                            <td> @Model[m]</td>
+                        }
+                        else
+                        {
+                            <td>Doesn't look like anyone has given this a score yet!</td>
+                        }
+                    </tr>
+                }
+            </table>
+        }
+    </body>
+</html>

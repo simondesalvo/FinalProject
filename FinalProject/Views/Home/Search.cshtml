@@ -1,11 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Movie Search";
 }
-<h3>Search By Title!</h3>
-<br />
-<form action="../Home/SearchResult" method="post">
-    <input type="text" required pattern ="[a-zA-Z0-9 -:]+" name="userInput" />
-    <br />
-    <input type="submit" value="Submit" class="btn btn-success" />
-</form>
-
+<html>
+    <body  class="viewBkgd">
+        <table align="center">
+            <tr>
+                <td>
+                    <h4 class="titleColor">Search By Title</h4>
+                    <br />
+                    <form action="../Home/SearchResult" method="post">
+                        <input type="text" required pattern="[a-zA-Z0-9 -:]+" name="userInput" />
+                        <br />
+                        <br />
+                        <input type="submit" value="Find Movie" class="btn btn-success" />
+                    </form>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    <img src="https://i.imgur.com/K5MBxOL.jpg" height="400" width="300" style="float:right" />
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

@@ -2,42 +2,45 @@
     ViewData["Title"] = "User Ratings v. Metacritic";
 }
 @model Dictionary<string, int[]>
-
-    <h5>Movi-E is an incredibly rude robot who will judge your taste in movies.</h5>
-    <img style="padding-left:250px" src="https://media.giphy.com/media/L0vwTuang3Rrq/giphy.gif" />
-    <br />
-    <br />
-    <table class="table table-bordered">
-        <tr>
-            <th>Movie Title</th>
-            <th>User Rating</th>
-            <th>Metacritic Score</th>
-            <th>Movi-E's Thoughts</th>
-        </tr>
-        @foreach (string s in Model.Keys)
-        {
+<html>
+    <body class="viewBkgd">
+        <h4 class="titleColor">Movi-E is an incredibly rude robot who will judge your taste in movies</h4>
+        <img style="padding-left:250px" src="https://media.giphy.com/media/L0vwTuang3Rrq/giphy.gif" />
+        <br />
+        <br />
+        <table class="table table-bordered table-striped tableBorderWidth">
             <tr>
-                <td>@s</td>
-                <td>@Model[s][0]</td>
-                <td>@Model[s][1]</td>
-                @if (Model[s][0] > Model[s][1])
-                {
-            <td bgcolor="#80ced6">😏 Critics are trash, but maybe you suck.</td>
-                }
-                else if (Model[s][0] == Model[s][1])
-                {
-            <td bgcolor="#f18973">🤯 ...this is so rare I'm speechless</td>
-                }
-                else if(Model[s][0] == 0)
-                {
-            <td bgcolor="#FFFACD">🤬 What, you haven't even watched this yet? Get outta here!</td>
-                }
-                else
-                {
-            <td bgcolor="#d5f4e6">😏 You sure know better than the professionals, huh?</td>
-                }
-
-
+                <th>Movie Title</th>
+                <th>User Rating</th>
+                <th>Metacritic Score</th>
+                <th>Movi-E's Thoughts</th>
             </tr>
-        }
-    </table>
+            @foreach (string s in Model.Keys)
+            {
+                <tr>
+                    <td class="aRef"><b>@s</b></td>
+                    <td>@Model[s][0]</td>
+                    <td>@Model[s][1]</td>
+                    @if (Model[s][0] > Model[s][1])
+                    {
+                        <td bgcolor="#80ced6">😏 Critics are trash, but maybe you suck.</td>
+                    }
+                    else if (Model[s][0] == Model[s][1])
+                    {
+                        <td bgcolor="#f18973">🤯 ...this is so rare I'm speechless</td>
+                    }
+                    else if (Model[s][0] == 0)
+                    {
+                        <td bgcolor="#FFFACD">🤬 What, you haven't even watched this yet? Get outta here!</td>
+                    }
+                    else
+                    {
+                        <td bgcolor="#d5f4e6">😏 You sure know better than the professionals, huh?</td>
+                    }
+
+
+                </tr>
+            }
+        </table>
+    </body>
+</html>

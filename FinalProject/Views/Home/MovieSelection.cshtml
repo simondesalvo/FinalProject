@@ -3,54 +3,64 @@
 }
 
 @model APIPopVM
-<h4>@Model.popMovie.Title</h4>
-<p>
-    <b>Type (movie, series, etc):</b> @Model.popMovie.Type
-    @if (!string.IsNullOrEmpty(Model.popMovie.Type))
-    {
-        if (Model.popMovie.Type == "movie")
-        {
-            <img src="https://i.imgur.com/4K7MxjM.png" height="30" width="30" />
-        }
-        else if (Model.popMovie.Type == "series" || Model.popMovie.Type == "episode")
-        {
-            <img src="https://i.imgur.com/20FGIYy.jpg" height="30" width="30" />
-        }
-        else if (Model.popMovie.Type == "game")
-        {
-            <img src="https://i.imgur.com/cd3srlZ.jpg" height="30" width="30" />
-        }
-    }
-</p>
-<br />
-<img src="@Model.popMovie.Poster" width="200" height="300" />
-<a href="@Model.apiMovie.trailer.link" class="btn btn-outline-info" target="_blank">Trailer Link</a>
-<br />
-<b>Plot:</b>
-<p>@Model.popMovie.Plot</p>
-<b>Genre:</b>
-<p>@Model.popMovie.Genre</p>
-<b>Runtime:</b>
-<br />
-<p>@Model.popMovie.Runtime</p>
-<b>Director(s):</b>
-<p><a href="../Recommendation/GetMoviesByDirector?name=@Model.popMovie.Director" class="btn btn-outline-info">@Model.popMovie.Director</a></p>
-<b>Actor(s):</b>
-<p><a href="../Recommendation/GetMoviesByActor?name=@Model.popMovie.Actors" class="btn btn-outline-info">@Model.popMovie.Actors</a></p>
-<br />
-<b>Release Year:</b>
-<p>@Model.popMovie.Year</p>
-<a href="../Recommendation/GetMoviesOfDecade?year=@Model.popMovie.Year&movieId=@Model.popMovie.imdbID" class="btn btn-outline-info">Get other movies of this decade</a>
-<br />
-@if (Model.popMovie.DVD != null)
-{
-    <b>DVD Release Date:</b>
-    <p>@Model.popMovie.DVD</p>
-}
-<br />
-<br />
-<br />
-<a href="../Recommendation/GetOtherUsersWatchedMovie?movieId=@Model.popMovie.imdbID" class="btn btn-outline-info">See what other users have to say</a>
-<br />
-<br />
-<a href="../Home/AddtoWatchedList?id=@Model.popMovie.imdbID" class="btn btn-lg btn btn-outline-success">Add To List</a>
+
+<html>
+    <body class="viewBkgd">
+        <div class="pageBorder">
+            <p></p>
+            <div class="divStyle">
+                <h4 class="titleColor">@Model.popMovie.Title</h4>
+                <p>
+                    <b>Type (movie, series, etc):</b> @Model.popMovie.Type
+                    @if (!string.IsNullOrEmpty(Model.popMovie.Type))
+                    {
+                        if (Model.popMovie.Type == "movie")
+                        {
+                            <img src="https://i.imgur.com/4K7MxjM.png" height="30" width="30" />
+                        }
+                        else if (Model.popMovie.Type == "series" || Model.popMovie.Type == "episode")
+                        {
+                            <img src="https://i.imgur.com/20FGIYy.jpg" height="30" width="30" />
+                        }
+                        else if (Model.popMovie.Type == "game")
+                        {
+                            <img src="https://i.imgur.com/cd3srlZ.jpg" height="30" width="30" />
+                        }
+                    }
+                </p>
+                <br />
+                <img src="@Model.popMovie.Poster" width="200" height="300" /><br /><br />
+                <a href="@Model.apiMovie.trailer.link" class="btn btn-outline-info aRef" target="_blank"><b>View Trailer</b></a>
+                <br />
+                <br />
+                <b>Plot:</b>
+                <p>@Model.popMovie.Plot</p>
+                <b>Genre:</b>
+                <p>@Model.popMovie.Genre</p>
+                <b>Runtime:</b>
+                <br />
+                <p>@Model.popMovie.Runtime</p>
+                <b>Director(s):</b>
+                <p><a href="../Recommendation/GetMoviesByDirector?name=@Model.popMovie.Director" class="btn btn-outline-info aRef"><b>@Model.popMovie.Director</b></a></p>
+                <b>Actor(s):</b>
+                <p><a href="../Recommendation/GetMoviesByActor?name=@Model.popMovie.Actors" class="btn btn-outline-info aRef"><b>@Model.popMovie.Actors</b></a></p>
+                <br />
+                <b>Release Year:</b>
+                <p>@Model.popMovie.Year</p>
+                <a href="../Recommendation/GetMoviesOfDecade?year=@Model.popMovie.Year&movieId=@Model.popMovie.imdbID" class="btn btn-outline-info aRef"><b>Get other movies of this decade</b></a>
+                <br />
+                <br />
+                @if (Model.popMovie.DVD != null)
+                {
+                    <b>DVD Release Date:</b>
+                    <p>@Model.popMovie.DVD</p>
+                }
+                <br />
+                <a href="../Recommendation/GetOtherUsersWatchedMovie?movieId=@Model.popMovie.imdbID" class="btn btn-outline-info aRef"><b>See what other users have to say</b></a>
+                <br />
+                <br />
+                <a href="../Home/AddtoWatchedList?id=@Model.popMovie.imdbID" class="btn btn-lg btn btn-outline-success"><b>Add To List</b></a>
+            </div>
+        </div>
+    </body>
+</html>

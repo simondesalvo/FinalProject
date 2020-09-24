@@ -53,48 +53,7 @@ namespace FinalProject.Controllers
                     int[] scores = new int[] { savedMovies[i].UserRating, metaScore };
                     userPop.Add(savedMovies[i].Title, scores);
                 }
-            }
-
-            //string userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            //List<UserMovie> savedMovies = _context.UserMovie.Where(x => x.UserId == userId).ToList();
-
-            //List<PopcornMovie> popList = new List<PopcornMovie>();
-
-            //UserPopcorn userPop = new UserPopcorn();
-
-            //List<UserPopcorn> upList = new List<UserPopcorn>();
-
-            //foreach (UserMovie u in savedMovies)
-            //{
-            //    PopcornMovie pop = new PopcornMovie();
-            //    pop = await MovieSelection($"{u.MovieId}");
-            //    //breaks on second call
-            //    int intScore;
-            //    bool isValid = int.TryParse(pop.Metascore.ToString(), out intScore);
-            //    if (isValid == true)
-            //    {
-            //        popList.Add(pop);
-            //    }
-            //    else
-            //    {
-            //        savedMovies.Remove(u);
-            //    }
-
-            //}
-
-            //userPop.UserMovies = savedMovies;
-            //userPop.PopcornMovies = popList;
-
-
-
-
-            //foreach loop getting list of popcorn movie
-            //combined class of UserPopcorn, make list of?
-            //int try parse if/else statement on metacritic rating
-            //in view display, titel, user rating, popcorn metacritic rating, if higher
-            //say "Y'all have weird taste, maybe watch some AFI top 100 and try again"
-            //if lower "critics were wrong I guess"
-
+            }     
 
             return View(userPop);
         }

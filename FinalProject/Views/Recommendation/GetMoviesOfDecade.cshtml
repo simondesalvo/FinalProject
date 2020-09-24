@@ -1,28 +1,33 @@
-﻿@*@model List<UserMovie>*@
-@model Dictionary<UserMovie,double>
+﻿@model Dictionary<UserMovie, double>
 @{
     ViewData["Title"] = "GetMoviesOfDecade";
 }
-
-<h4>Recommended Other Movies Of Selected Decade</h4>
-<img src="https://i.imgur.com/WMQqkwT.jpg" align="middle"  height="350" width="500" />
-@if (Model.Count == 0)
-{
-    <b>No movies found from this decade in our collection, you'll be the first to add one!</b>
-}
-else
-{
-    <table class="table table-bordered">
-        <tr>
-            <th>Title</th>
-            <th>Average User Score</th>
-        </tr>
-        @foreach(UserMovie um in Model.Keys)
+<html>
+    <body class="viewBkgd">
+        @if (Model.Count == 0)
         {
-            <tr>
-                <td><a href="../Home/MovieSelection?id=@um.MovieId">@um.Title</a></td>
-                <td>@Model[um]</td>
-            </tr>        
+            <h4 class="titleColor">No movies found from this decade in our collection, you'll be the first to add one!</h4>
         }
-    </table>
-}
+        else
+        {
+            <h4 class="titleColor">Recommended Other Movies Of Selected Decade</h4>
+            <img src="https://i.imgur.com/WMQqkwT.jpg" align="middle" height="350" width="500" />
+            <br />
+            <br />
+            <table class="table table-bordered table-striped tableBorderWidth">
+                <tr>
+                    <th>Title</th>
+                    <th>Average User Score</th>
+                </tr>
+                @foreach (UserMovie um in Model.Keys)
+                {
+                    <tr>
+                        <td><a href="../Home/MovieSelection?id=@um.MovieId" class="aRef"><b>@um.Title</b></a></td>
+                        <td>@Model[um]</td>
+                    </tr>
+
+                }
+            </table>
+        }
+    </body>
+</html>

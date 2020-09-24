@@ -11,7 +11,6 @@ namespace FinalProject.Models
             AspNetUserLogins = new HashSet<AspNetUserLogins>();
             AspNetUserRoles = new HashSet<AspNetUserRoles>();
             AspNetUserTokens = new HashSet<AspNetUserTokens>();
-            Movie = new HashSet<Movie>();
             UserMovie = new HashSet<UserMovie>();
         }
 
@@ -35,7 +34,6 @@ namespace FinalProject.Models
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
         public virtual ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
-        public virtual ICollection<Movie> Movie { get; set; }
         public virtual ICollection<UserMovie> UserMovie { get; set; }
     }
 }

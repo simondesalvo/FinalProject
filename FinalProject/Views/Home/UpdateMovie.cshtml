@@ -1,72 +1,72 @@
 ﻿@{
     ViewData["Title"] = "Update Movie";
 }
-@*@model UserMovie*@
 @model UserMovieAllUsersVM
+<html>
+    <body class="viewBkgd">
+        <div class="pageBorder">
+            <p></p>
+            <div class="divStyle">
+                <h4 class="titleColor">Update details for @Model.userMovie.Title</h4>
+                <br />
+                <form action="../Home/UpdateWatchedList" method="post">
+                    <input type="text" name="Id" value="@Model.userMovie.Id" hidden />
+                    <b>Have you watched this movie? (check the box for "yes")</b>
+                    @if (Model.userMovie.Watched == true)
+                    {
+                        <input type="checkbox" id="Watched" name="Watched" value="true" checked />
+                        <input type="checkbox" id="Watched" name="Watched" value="false" hidden />
+                    }
+                    else
+                    {
+                        <input type="checkbox" id="Watched" name="Watched" value="true" />
+                        <input type="checkbox" id="Watched" name="Watched" value="false" hidden />
+                    }
+                    <br />
+                    <br />
+                    <b>Where did you watch it?</b>
+                    <input type="text" id="WatchLocation" name="WatchLocation" value="@Model.userMovie.WatchLocation" placeholder="Where did you watch it?" />
+                    <br />
+                    <br />
+                    <b>When did you watch it?</b>
+                    @if (Model.userMovie.WatchYear == null)
+                    {
+                        <input type="datetime-local" id="WatchYear" name="WatchYear" value="@Model.userMovie.WatchYear" />
+                    }
+                    else
+                    {
+                        <input type="datetime" id="WatchYear" name="WatchYear" value="@Model.userMovie.WatchYear" placeholder="@Model.userMovie.WatchYear" />
+                    }
 
-<h4>@Model.userMovie.Title</h4>
-<br />
-<form action="../Home/UpdateWatchedList" method="post">
-    <input type="text" name="Id" value="@Model.userMovie.Id" hidden />
-    <b>Have you watched this movie? (check the box for "yes")</b>
-    @if (Model.userMovie.Watched == true)
-    {
-        <input type="checkbox" id="Watched" name="Watched" value="true" checked />
-        <input type="checkbox" id="Watched" name="Watched" value="false" hidden />
-    }
-    else
-    {
-        <input type="checkbox" id="Watched" name="Watched" value="true" />
-        <input type="checkbox" id="Watched" name="Watched" value="false" hidden />
-    }
-    <br />
-    <br />
-    <b>Where did you watch it?</b>
-    <input type="text" id="WatchLocation" name="WatchLocation" value="@Model.userMovie.WatchLocation" placeholder="Where did you watch it?" />
-    <br />
-    <br />
-    <b>When did you watch it?</b>
-    @if (Model.userMovie.WatchYear == null)
-    {
-        <input type="datetime-local" id="WatchYear" name="WatchYear" value="@Model.userMovie.WatchYear" />
-    }
-    else
-    {
-        <input type="datetime" id="WatchYear" name="WatchYear" value="@Model.userMovie.WatchYear" placeholder="@Model.userMovie.WatchYear" />
-    }
+                    <br />
+                    <br />
+                    <b>Your Rating (1-100)</b>
+                    <input type="number" id="UserRating" name="UserRating" min="1" max="100" value="@Model.userMovie.UserRating" />
+                    <br />
+                    <br />
+                    <b>Short review, 300 character max</b>
+                    <textarea rows="5" cols="50" id="UserReview" name="UserReview" maxlength="300">@Model.userMovie.UserReview</textarea>
+                    <br /><br />
+                    @if (!string.IsNullOrEmpty(@Model.WatchedWithUserNames))
+                    {
+                        <b>Previously watched with : </b>@Model.WatchedWithUserNames
+                    }
+                    <br /><br />
+                    <b>Watched this movie with any of our users? </b><br />
+                    <b>Which ones? (hold down control to select multiple users)</b>
+                    <select multiple="multiple" name="WatchedTogetherUserNames">
+                        @foreach (AspNetUsers user in Model.aspnetUsers)
+                        {
+                            string name = user.UserName.Substring(0, user.UserName.IndexOf('@'));                            
+                            <option value="@name">@name</option>
+                        }
+                    </select>
 
-    <br />
-    <br />
-    <b>Your Rating (1-100)</b>
-    <input type="number" id="UserRating" name="UserRating" min="1" max="100" value="@Model.userMovie.UserRating" />
-    <br />
-    <br />
-    <b>Short review, 300 character max</b>
-    <textarea rows="5" cols="50" id="UserReview" name="UserReview" maxlength="300">@Model.userMovie.UserReview</textarea>
-    <br /><br />
-    @if(!string.IsNullOrEmpty(@Model.WatchedWithUserNames))
-    { 
-        <p>Previously watched with : @Model.WatchedWithUserNames</p>
-    }
-    <b>Watched this movie with any of our users? Which ones? (hold down control to select multiple users)</b>
-    <select multiple="multiple" name="WatchedTogetherUserNames">
-        @foreach (AspNetUsers user in Model.aspnetUsers)
-        {
-            string name = user.UserName.Substring(0, user.UserName.IndexOf('@'));
-            bool bSelected = false;
-            if (!string.IsNullOrEmpty(Model.WatchedWithUserNames))
-            {
-                if (Model.WatchedWithUserNames.Contains(name))
-                {
-                    bSelected = true;
-                }
-            }
-            @*<option value="@user.Id">@user.UserName.Substring(0, user.UserName.IndexOf('@'))</option>*@
-            <option value="@name">@name</option>
-        }
-    </select>
+                    <br /><br />
+                    <input type="submit" value="Save Changes" class="btn btn-outline-info" />
 
-    <br /><br />
-    <input type="submit" value="Save Changes" />
-
-</form>
+                </form>
+            </div>
+        </div>
+</body>
+</html>

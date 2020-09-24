@@ -2,49 +2,51 @@
 @{
     ViewData["Title"] = "GetOtherUsersWatchedMovie";
 }
-
-@if (Model.Count == 0)
-{
-    <p>No other user has watched this movie.</p>
-    <p>Be the first one to watch it and don't forget to rate it and write a review!!</p>
-}
-else
-{
-    <h4>Here are other users who have watched @Model[0].userMovie.Title</h4>
-    <table class="table table-bordered">
-        <tr>
-            <th>Username</th>
-            <th>User Rating</th>
-            <th>User Review</th>
-        </tr>
-
-        @foreach (UserNameUserMovieVM item in Model)
+<html>
+    <body class="viewBkgd">
+        @if (Model.Count == 0)
         {
-    <tr>
-        <td>@item.UserName</td>
-        @if (@item.userMovie.UserRating > 0)
-        {
-            <td>@item.userMovie.UserRating</td>
+            <h4 class="titleColor">No other user has watched this movie yet.</h4>
+            <h4 class="titleColor">Be the first one to watch it and don't forget to rate it and write a review!!</h4>
         }
         else
         {
-            <td>Movie not rated</td>
-        }
-        @if (item.userMovie.UserReview != null)
-        {
-            <td>@item.userMovie.UserReview</td>
-        }
-        else
-        {
-            <td>Not yet reviewed</td>
+            <h4 class="titleColor">Here are other users who have watched @Model[0].userMovie.Title</h4>
+            <table class="table table-bordered table-striped tableBorderWidth">
+                <tr>
+                    <th>Username</th>
+                    <th>User Rating</th>
+                    <th>User Review</th>
+                </tr>
+
+                @foreach (UserNameUserMovieVM item in Model)
+                {
+                    <tr>
+                        <td>@item.UserName</td>
+                        @if (@item.userMovie.UserRating > 0)
+                        {
+                            <td>@item.userMovie.UserRating</td>
+                        }
+                        else
+                        {
+                            <td>Movie not rated</td>
+                        }
+                        @if (item.userMovie.UserReview != null)
+                        {
+                            <td>@item.userMovie.UserReview</td>
+                        }
+                        else
+                        {
+                            <td>Not yet reviewed</td>
 
 
-        }
-    </tr>
-        }
+                        }
+                    </tr>
+                }
             </table>
-}
-
+        }
+    </body>
+</html>
 
 
 

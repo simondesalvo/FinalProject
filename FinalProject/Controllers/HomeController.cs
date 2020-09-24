@@ -254,7 +254,7 @@ namespace FinalProject.Controllers
                     return false;
                 }
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 return false;
             }
@@ -289,7 +289,7 @@ namespace FinalProject.Controllers
                     return false;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -392,7 +392,7 @@ namespace FinalProject.Controllers
                     _context.SaveChanges();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
@@ -422,7 +422,7 @@ namespace FinalProject.Controllers
                     _context.SaveChanges();
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
 
             }

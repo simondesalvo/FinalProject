@@ -1,20 +1,23 @@
 ﻿@model Dictionary<UserMovie, double>
-
-<h4>Funny</h4>
-@if (Model.Count == 0)
-{
-    <p>Uh oh, looks like we don't have any funny movies to recommend to you at this time!</p>
-}
-<table class="table table-bordered">
-    <tr>
-        <th>Movie</th>
-        <th>Average Rating</th>
-    </tr>
-    @foreach (UserMovie um in Model.Keys)
+<html>
+<body class="viewBkgd">
+    <h4 class="titleColor">Funny</h4>
+    @if (Model.Count == 0)
     {
-        <tr>
-            <td><a href="../Home/MovieSelection?id=@um.MovieId">@um.Title</a></td>
-            <td>@Model[um]</td>
-        </tr>
+        <p>Uh oh, looks like we don't have any funny movies to recommend to you at this time!</p>
     }
-</table>
+    <table class="table table-bordered table-striped tableBorderWidth">
+        <tr>
+            <th>Movie</th>
+            <th>Average Rating</th>
+        </tr>
+        @foreach (UserMovie um in Model.Keys)
+        {
+            <tr>
+                <td><a href="../Home/MovieSelection?id=@um.MovieId" class="aRef"><b>@um.Title</b></a></td>
+                <td>@Model[um]</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

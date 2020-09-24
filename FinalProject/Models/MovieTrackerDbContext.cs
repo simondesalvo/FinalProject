@@ -16,8 +16,7 @@ namespace FinalProject.Models
             : base(options)
         {
         }
-
-        public virtual DbSet<Actor> Actor { get; set; }
+                
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
@@ -26,7 +25,6 @@ namespace FinalProject.Models
         public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
         public virtual DbSet<Genre> Genre { get; set; }
-        public virtual DbSet<Movie> Movie { get; set; }
         public virtual DbSet<MovieActor> MovieActor { get; set; }
         public virtual DbSet<MovieDirector> MovieDirector { get; set; }
         public virtual DbSet<MovieYear> MovieYear { get; set; }
@@ -43,13 +41,7 @@ namespace FinalProject.Models
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Actor>(entity =>
-            {
-                entity.Property(e => e.ActorId).HasMaxLength(50);
-
-                entity.Property(e => e.ActorName).HasMaxLength(50);
-            });
+        {            
 
             modelBuilder.Entity<AspNetRoleClaims>(entity =>
             {
@@ -160,28 +152,7 @@ namespace FinalProject.Models
                     .IsRequired()
                     .HasColumnName("IMDBId")
                     .HasMaxLength(50);
-            });
-
-            modelBuilder.Entity<Movie>(entity =>
-            {
-                entity.HasKey(e => e.Imdbid)
-                    .HasName("PK__Movie__070B85ED03D996EB");
-
-                entity.Property(e => e.Imdbid)
-                    .HasColumnName("IMDBId")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.DirectorId).HasMaxLength(50);
-
-                entity.Property(e => e.Plot).HasMaxLength(250);
-
-                entity.Property(e => e.UserId).HasMaxLength(450);
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.Movie)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Movie__UserId__03F0984C");
-            });
+            });                       
 
             modelBuilder.Entity<MovieActor>(entity =>
             {

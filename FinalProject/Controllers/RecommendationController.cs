@@ -233,24 +233,7 @@ namespace FinalProject.Controllers
 
             return View(unameUMovieList);
         }
-        //public async Task<IActionResult> SearchResultByIMDBId(List<string> imdbIdList)
-        //{
-        //    List<MovieSearch> movies = new List<MovieSearch>();
-        //    if(imdbIdList != null && imdbIdList.Count > 0)
-        //    {
-        //        foreach(string movieId in imdbIdList)
-        //        {
-        //            APIMovie movie = await _movieDAL.GetMovieInfo($"{movieId}");
-        //            if(movie != null)
-        //            {
-        //                movies.Add(movie);
-        //            }
-        //        }
-        //    }
-
-        //    return View("SearchResult", movies);
-        //}              
-
+        
         public double GetAverageRating(UserMovie movie)
         {
             List<int> ratings = new List<int>();
