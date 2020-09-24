@@ -13,34 +13,47 @@
 
                 @foreach (DictionaryVM vm in Model)
                 {
-                    <tr>
-                        <th>@vm.Actor</th>
-                        <th></th>
-                    </tr>
-                    if (vm.MoviesWithScore.Count == 0)
+                    if (vm.Actor == "N/A")
                     {
                         <tr>
-
-                            <td>Looks like we don't have any movies with this director in our database! </td>
-                            <td></td>
+                            <th>
+                                Oops looks like there isn't a director for this!
+                            </th>
                         </tr>
+                        break;
                     }
-                    foreach (UserMovie m in vm.MoviesWithScore.Keys)
+                    else
                     {
                         <tr>
-                            <td><a href="../Home/MovieSelection?id=@m.MovieId" class="aRef"><b>@m.Title</b></a></td>
-                            @if (vm.MoviesWithScore[m] > 0)
-                            {
-                                <td>Average Score: @vm.MoviesWithScore[m]</td>
-                            }
-                            else
-                            {
-                                <td>Nobody has given this movie a score yet!</td>
-                            }
+                            <th>@vm.Actor</th>
+                            <th></th>
                         </tr>
-                    }
+                        if (vm.MoviesWithScore.Count == 0)
+                        {
+                            <tr>
 
+                                <td>Looks like we don't have any movies with this director in our database! </td>
+                                <td></td>
+                            </tr>
+                        }
+                        foreach (UserMovie m in vm.MoviesWithScore.Keys)
+                        {
+                            <tr>
+                                <td><a href="../Home/MovieSelection?id=@m.MovieId" class="aRef"><b>@m.Title</b></a></td>
+                                @if (vm.MoviesWithScore[m] > 0)
+                                {
+                                    <td>Average Score: @vm.MoviesWithScore[m]</td>
+                                }
+                                else
+                                {
+                                    <td>Nobody has given this movie a score yet!</td>
+                                }
+                            </tr>
+                        }
+
+                    }
                 }
+
             </table>
         }
     </body>
