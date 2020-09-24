@@ -240,11 +240,21 @@ namespace FinalProject.Controllers
             List<UserMovie> allMovies = _context.UserMovie.Where(u => u.MovieId == movie.MovieId).ToList();
             foreach (UserMovie m in allMovies)
             {
+                if (m.UserRating > 0) 
+                { 
                  ratings.Add(m.UserRating);       
+                }
             }
+            if(ratings.Count>0)
+            {
             double average = ratings.Average();
             double roundedAverage = Math.Round(average, 0);
             return roundedAverage;
+            }
+            else
+            {
+                return 0;
+            }
 
         }
 
