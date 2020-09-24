@@ -9,6 +9,12 @@
         <div class="pageBorder">
             <p></p>
             <div class="divStyle">
+                @if(string.IsNullOrEmpty(Model.popMovie.imdbID))
+                {
+                <h4 class="titleColor">Uh oh looks like IMDB doesn't have information on this movie!</h4>
+                }
+                else
+                {
                 <h4 class="titleColor">@Model.popMovie.Title</h4>
                 <p>
                     <b>Type (movie, series, etc):</b> @Model.popMovie.Type
@@ -97,6 +103,7 @@
                 <br />
                 <br />
                 <a href="../Home/AddtoWatchedList?id=@Model.popMovie.imdbID" class="btn btn-lg btn btn-outline-success"><b>Add To List</b></a>
+                }
             </div>
         </div>
     </body>
